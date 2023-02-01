@@ -19,7 +19,7 @@
      {
       devShell =
         pkgs.devshell.mkShell {
-          name="hello-aiken";
+          name="lucid";
           packages = with pkgs; [
             deno
             rnix-lsp
