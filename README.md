@@ -35,14 +35,14 @@ npm install lucid-cardano
 For JavaScript and TypeScript
 
 ```js
-import { Lucid } from "https://deno.land/x/lucid@0.9.4/mod.ts";
+import { Lucid } from "https://deno.land/x/lucid@0.9.6/mod.ts";
 ```
 
 #### Web
 
 ```html
 <script type="module">
-import { Lucid } from "https://unpkg.com/lucid-cardano@0.9.4/web/mod.js"
+import { Lucid } from "https://unpkg.com/lucid-cardano@0.9.6/web/mod.js"
 // ...
 </script>
 ```
@@ -67,7 +67,7 @@ Outputs a `dist` folder
 ### Basic usage
 
 ```js
-// import { Blockfrost, Lucid } from "https://deno.land/x/lucid@0.9.4/mod.ts"; Deno
+// import { Blockfrost, Lucid } from "https://deno.land/x/lucid@0.9.6/mod.ts"; Deno
 import { Blockfrost, Lucid } from "lucid-cardano"; // NPM
 
 const lucid = await Lucid.new(
@@ -94,6 +94,22 @@ console.log(txHash);
 
 ```
 deno task test
+```
+
+### Build Core
+
+This library is built on top of a customized version of the serialization-lib
+(cardano-multiplatform-lib) and on top of the message-signing library, which are
+written in Rust.
+
+```
+deno task build:core
+```
+
+### Test Core
+
+```
+deno task test:core
 ```
 
 ### Docs
@@ -123,25 +139,6 @@ experiments: {
 To run the library in Node.js you need to set `{"type" : "module"}` in your
 project's `package.json`. Otherwise you will get import issues.
 
-<br />
-This library is built on top of a customized version of the serialization-lib (cardano-multiplatform-lib) and on top of the message-signing library.
-
-#### cardano-multiplatform-lib
-
-Link: https://github.com/Berry-Pool/cardano-multiplatform-lib/tree/vasil
-
-Branch: **vasil**
-
-Commit hash: **6f34088dfecd63aaa55622e40faba9d7ea57491f**
-
-#### message-signing
-
-Link: https://github.com/Emurgo/message-signing
-
-Branch: **master**
-
-Commit hash: **16dcadc69557dd7c20e62a966aaded1e051c287e**
-
 ### Contributing
 
 Contributions and PRs are welcome!\
@@ -152,9 +149,9 @@ Join us on [Discord](https://discord.gg/82MWs63Tdm)!
 ### Use Lucid with React
 
 [use-cardano](https://use-cardano.alangaming.com/) a React context, hook and set
-of components built on top of Lucid
+of components built on top of Lucid.
 
 ### Use Lucid with Next.js
 
 [Cardano Starter Kit](https://cardano-starter-kit.alangaming.com/) a Next.js
-starter kit for building Cardano dApps
+starter kit for building Cardano dApps.
