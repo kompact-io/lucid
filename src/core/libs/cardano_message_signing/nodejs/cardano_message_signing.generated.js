@@ -2,7 +2,11 @@
 // deno-lint-ignore-file
 // deno-fmt-ignore-file
 // source-hash: ccea9a27c8aee355bc2051725d859ee0a31dcb77
+
+let imports = {};
+imports["__wbindgen_placeholder__"] = module.exports;
 let wasm;
+const { TextDecoder, TextEncoder } = require(`util`);
 
 const heap = new Array(128).fill(undefined);
 
@@ -26,7 +30,7 @@ function takeObject(idx) {
   return ret;
 }
 
-const cachedTextDecoder = new TextDecoder("utf-8", {
+let cachedTextDecoder = new TextDecoder("utf-8", {
   ignoreBOM: true,
   fatal: true,
 });
@@ -122,11 +126,20 @@ function debugString(val) {
 
 let WASM_VECTOR_LEN = 0;
 
-const cachedTextEncoder = new TextEncoder("utf-8");
+let cachedTextEncoder = new TextEncoder("utf-8");
 
-const encodeString = function (arg, view) {
-  return cachedTextEncoder.encodeInto(arg, view);
-};
+const encodeString = typeof cachedTextEncoder.encodeInto === "function"
+  ? function (arg, view) {
+    return cachedTextEncoder.encodeInto(arg, view);
+  }
+  : function (arg, view) {
+    const buf = cachedTextEncoder.encode(arg);
+    view.set(buf);
+    return {
+      read: arg.length,
+      written: buf.length,
+    };
+  };
 
 function passStringToWasm0(arg, malloc, realloc) {
   if (realloc === undefined) {
@@ -205,7 +218,7 @@ function isLikeNone(x) {
   return x === undefined || x === null;
 }
 /** */
-export const AlgorithmId = Object.freeze({
+module.exports.AlgorithmId = Object.freeze({
   /**
    * r" EdDSA (Pure EdDSA, not HashedEdDSA) - the algorithm used for Cardano addresses
    */
@@ -218,7 +231,7 @@ export const AlgorithmId = Object.freeze({
   "1": "ChaCha20Poly1305",
 });
 /** */
-export const KeyType = Object.freeze({
+module.exports.KeyType = Object.freeze({
   /**
    * r" octet key pair
    */
@@ -233,7 +246,7 @@ export const KeyType = Object.freeze({
   "2": "Symmetric",
 });
 /** */
-export const ECKey = Object.freeze({
+module.exports.ECKey = Object.freeze({
   CRV: 0,
   "0": "CRV",
   X: 1,
@@ -244,7 +257,7 @@ export const ECKey = Object.freeze({
   "3": "D",
 });
 /** */
-export const CurveType = Object.freeze({
+module.exports.CurveType = Object.freeze({
   P256: 0,
   "0": "P256",
   P384: 1,
@@ -261,7 +274,7 @@ export const CurveType = Object.freeze({
   "6": "Ed448",
 });
 /** */
-export const KeyOperation = Object.freeze({
+module.exports.KeyOperation = Object.freeze({
   Sign: 0,
   "0": "Sign",
   Verify: 1,
@@ -280,7 +293,7 @@ export const KeyOperation = Object.freeze({
   "7": "DeriveBits",
 });
 /** */
-export const CBORSpecialType = Object.freeze({
+module.exports.CBORSpecialType = Object.freeze({
   Bool: 0,
   "0": "Bool",
   Float: 1,
@@ -295,7 +308,7 @@ export const CBORSpecialType = Object.freeze({
   "5": "Null",
 });
 /** */
-export const CBORValueKind = Object.freeze({
+module.exports.CBORValueKind = Object.freeze({
   Int: 0,
   "0": "Int",
   Bytes: 1,
@@ -312,21 +325,21 @@ export const CBORValueKind = Object.freeze({
   "6": "Special",
 });
 /** */
-export const LabelKind = Object.freeze({
+module.exports.LabelKind = Object.freeze({
   Int: 0,
   "0": "Int",
   Text: 1,
   "1": "Text",
 });
 /** */
-export const SignedMessageKind = Object.freeze({
+module.exports.SignedMessageKind = Object.freeze({
   COSESIGN: 0,
   "0": "COSESIGN",
   COSESIGN1: 1,
   "1": "COSESIGN1",
 });
 /** */
-export const SigContext = Object.freeze({
+module.exports.SigContext = Object.freeze({
   Signature: 0,
   "0": "Signature",
   Signature1: 1,
@@ -339,7 +352,7 @@ const BigNumFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_bignum_free(ptr)
 );
 /** */
-export class BigNum {
+class BigNum {
   static __wrap(ptr) {
     const obj = Object.create(BigNum.prototype);
     obj.ptr = ptr;
@@ -496,12 +509,13 @@ export class BigNum {
     }
   }
 }
+module.exports.BigNum = BigNum;
 
 const CBORArrayFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_cborarray_free(ptr)
 );
 /** */
-export class CBORArray {
+class CBORArray {
   static __wrap(ptr) {
     const obj = Object.create(CBORArray.prototype);
     obj.ptr = ptr;
@@ -600,12 +614,13 @@ export class CBORArray {
     return ret !== 0;
   }
 }
+module.exports.CBORArray = CBORArray;
 
 const CBORObjectFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_cborobject_free(ptr)
 );
 /** */
-export class CBORObject {
+class CBORObject {
   static __wrap(ptr) {
     const obj = Object.create(CBORObject.prototype);
     obj.ptr = ptr;
@@ -716,12 +731,13 @@ export class CBORObject {
     return ret !== 0;
   }
 }
+module.exports.CBORObject = CBORObject;
 
 const CBORSpecialFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_cborspecial_free(ptr)
 );
 /** */
-export class CBORSpecial {
+class CBORSpecial {
   static __wrap(ptr) {
     const obj = Object.create(CBORSpecial.prototype);
     obj.ptr = ptr;
@@ -850,12 +866,13 @@ export class CBORSpecial {
     return ret === 0xFFFFFF ? undefined : ret;
   }
 }
+module.exports.CBORSpecial = CBORSpecial;
 
 const CBORValueFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_cborvalue_free(ptr)
 );
 /** */
-export class CBORValue {
+class CBORValue {
   static __wrap(ptr) {
     const obj = Object.create(CBORValue.prototype);
     obj.ptr = ptr;
@@ -1070,12 +1087,13 @@ export class CBORValue {
     return ret === 0 ? undefined : CBORSpecial.__wrap(ret);
   }
 }
+module.exports.CBORValue = CBORValue;
 
 const COSEEncryptFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_coseencrypt_free(ptr)
 );
 /** */
-export class COSEEncrypt {
+class COSEEncrypt {
   static __wrap(ptr) {
     const obj = Object.create(COSEEncrypt.prototype);
     obj.ptr = ptr;
@@ -1181,12 +1199,13 @@ export class COSEEncrypt {
     return COSEEncrypt.__wrap(ret);
   }
 }
+module.exports.COSEEncrypt = COSEEncrypt;
 
 const COSEEncrypt0Finalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_coseencrypt0_free(ptr)
 );
 /** */
-export class COSEEncrypt0 {
+class COSEEncrypt0 {
   static __wrap(ptr) {
     const obj = Object.create(COSEEncrypt0.prototype);
     obj.ptr = ptr;
@@ -1283,12 +1302,13 @@ export class COSEEncrypt0 {
     return COSEEncrypt0.__wrap(ret);
   }
 }
+module.exports.COSEEncrypt0 = COSEEncrypt0;
 
 const COSEKeyFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_cosekey_free(ptr)
 );
 /** */
-export class COSEKey {
+class COSEKey {
   static __wrap(ptr) {
     const obj = Object.create(COSEKey.prototype);
     obj.ptr = ptr;
@@ -1478,12 +1498,13 @@ export class COSEKey {
     return COSEKey.__wrap(ret);
   }
 }
+module.exports.COSEKey = COSEKey;
 
 const COSERecipientFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_coserecipient_free(ptr)
 );
 /** */
-export class COSERecipient {
+class COSERecipient {
   static __wrap(ptr) {
     const obj = Object.create(COSERecipient.prototype);
     obj.ptr = ptr;
@@ -1580,12 +1601,13 @@ export class COSERecipient {
     return COSERecipient.__wrap(ret);
   }
 }
+module.exports.COSERecipient = COSERecipient;
 
 const COSERecipientsFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_coserecipients_free(ptr)
 );
 /** */
-export class COSERecipients {
+class COSERecipients {
   static __wrap(ptr) {
     const obj = Object.create(COSERecipients.prototype);
     obj.ptr = ptr;
@@ -1671,12 +1693,13 @@ export class COSERecipients {
     wasm.coserecipients_add(this.ptr, elem.ptr);
   }
 }
+module.exports.COSERecipients = COSERecipients;
 
 const COSESignFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_cosesign_free(ptr)
 );
 /** */
-export class COSESign {
+class COSESign {
   static __wrap(ptr) {
     const obj = Object.create(COSESign.prototype);
     obj.ptr = ptr;
@@ -1782,12 +1805,13 @@ export class COSESign {
     return COSESign.__wrap(ret);
   }
 }
+module.exports.COSESign = COSESign;
 
 const COSESign1Finalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_cosesign1_free(ptr)
 );
 /** */
-export class COSESign1 {
+class COSESign1 {
   static __wrap(ptr) {
     const obj = Object.create(COSESign1.prototype);
     obj.ptr = ptr;
@@ -1934,12 +1958,13 @@ export class COSESign1 {
     return COSESign1.__wrap(ret);
   }
 }
+module.exports.COSESign1 = COSESign1;
 
 const COSESign1BuilderFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_cosesign1builder_free(ptr)
 );
 /** */
-export class COSESign1Builder {
+class COSESign1Builder {
   static __wrap(ptr) {
     const obj = Object.create(COSESign1Builder.prototype);
     obj.ptr = ptr;
@@ -2009,12 +2034,13 @@ export class COSESign1Builder {
     return COSESign1.__wrap(ret);
   }
 }
+module.exports.COSESign1Builder = COSESign1Builder;
 
 const COSESignBuilderFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_cosesignbuilder_free(ptr)
 );
 /** */
-export class COSESignBuilder {
+class COSESignBuilder {
   static __wrap(ptr) {
     const obj = Object.create(COSESignBuilder.prototype);
     obj.ptr = ptr;
@@ -2080,12 +2106,13 @@ export class COSESignBuilder {
     return COSESign.__wrap(ret);
   }
 }
+module.exports.COSESignBuilder = COSESignBuilder;
 
 const COSESignatureFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_cosesignature_free(ptr)
 );
 /** */
-export class COSESignature {
+class COSESignature {
   static __wrap(ptr) {
     const obj = Object.create(COSESignature.prototype);
     obj.ptr = ptr;
@@ -2177,12 +2204,13 @@ export class COSESignature {
     return COSESignature.__wrap(ret);
   }
 }
+module.exports.COSESignature = COSESignature;
 
 const COSESignaturesFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_cosesignatures_free(ptr)
 );
 /** */
-export class COSESignatures {
+class COSESignatures {
   static __wrap(ptr) {
     const obj = Object.create(COSESignatures.prototype);
     obj.ptr = ptr;
@@ -2268,12 +2296,13 @@ export class COSESignatures {
     wasm.cosesignatures_add(this.ptr, elem.ptr);
   }
 }
+module.exports.COSESignatures = COSESignatures;
 
 const CounterSignatureFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_countersignature_free(ptr)
 );
 /** */
-export class CounterSignature {
+class CounterSignature {
   static __wrap(ptr) {
     const obj = Object.create(CounterSignature.prototype);
     obj.ptr = ptr;
@@ -2355,12 +2384,13 @@ export class CounterSignature {
     return COSESignatures.__wrap(ret);
   }
 }
+module.exports.CounterSignature = CounterSignature;
 
 const EdDSA25519KeyFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_eddsa25519key_free(ptr)
 );
 /** */
-export class EdDSA25519Key {
+class EdDSA25519Key {
   static __wrap(ptr) {
     const obj = Object.create(EdDSA25519Key.prototype);
     obj.ptr = ptr;
@@ -2413,12 +2443,13 @@ export class EdDSA25519Key {
     return COSEKey.__wrap(ret);
   }
 }
+module.exports.EdDSA25519Key = EdDSA25519Key;
 
 const HeaderMapFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_headermap_free(ptr)
 );
 /** */
-export class HeaderMap {
+class HeaderMap {
   static __wrap(ptr) {
     const obj = Object.create(HeaderMap.prototype);
     obj.ptr = ptr;
@@ -2654,12 +2685,13 @@ export class HeaderMap {
     return HeaderMap.__wrap(ret);
   }
 }
+module.exports.HeaderMap = HeaderMap;
 
 const HeadersFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_headers_free(ptr)
 );
 /** */
-export class Headers {
+class Headers {
   static __wrap(ptr) {
     const obj = Object.create(Headers.prototype);
     obj.ptr = ptr;
@@ -2741,12 +2773,13 @@ export class Headers {
     return Headers.__wrap(ret);
   }
 }
+module.exports.Headers = Headers;
 
 const IntFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_int_free(ptr)
 );
 /** */
-export class Int {
+class Int {
   static __wrap(ptr) {
     const obj = Object.create(Int.prototype);
     obj.ptr = ptr;
@@ -2829,12 +2862,13 @@ export class Int {
     }
   }
 }
+module.exports.Int = Int;
 
 const LabelFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_label_free(ptr)
 );
 /** */
-export class Label {
+class Label {
   static __wrap(ptr) {
     const obj = Object.create(Label.prototype);
     obj.ptr = ptr;
@@ -2987,12 +3021,13 @@ export class Label {
     return Label.__wrap(ret);
   }
 }
+module.exports.Label = Label;
 
 const LabelsFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_labels_free(ptr)
 );
 /** */
-export class Labels {
+class Labels {
   static __wrap(ptr) {
     const obj = Object.create(Labels.prototype);
     obj.ptr = ptr;
@@ -3078,12 +3113,13 @@ export class Labels {
     wasm.labels_add(this.ptr, elem.ptr);
   }
 }
+module.exports.Labels = Labels;
 
 const PasswordEncryptionFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_passwordencryption_free(ptr)
 );
 /** */
-export class PasswordEncryption {
+class PasswordEncryption {
   static __wrap(ptr) {
     const obj = Object.create(PasswordEncryption.prototype);
     obj.ptr = ptr;
@@ -3149,12 +3185,13 @@ export class PasswordEncryption {
     return PasswordEncryption.__wrap(ret);
   }
 }
+module.exports.PasswordEncryption = PasswordEncryption;
 
 const ProtectedHeaderMapFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_protectedheadermap_free(ptr)
 );
 /** */
-export class ProtectedHeaderMap {
+class ProtectedHeaderMap {
   static __wrap(ptr) {
     const obj = Object.create(ProtectedHeaderMap.prototype);
     obj.ptr = ptr;
@@ -3234,12 +3271,13 @@ export class ProtectedHeaderMap {
     return HeaderMap.__wrap(ret);
   }
 }
+module.exports.ProtectedHeaderMap = ProtectedHeaderMap;
 
 const PubKeyEncryptionFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_pubkeyencryption_free(ptr)
 );
 /** */
-export class PubKeyEncryption {
+class PubKeyEncryption {
   static __wrap(ptr) {
     const obj = Object.create(PubKeyEncryption.prototype);
     obj.ptr = ptr;
@@ -3305,12 +3343,13 @@ export class PubKeyEncryption {
     return PubKeyEncryption.__wrap(ret);
   }
 }
+module.exports.PubKeyEncryption = PubKeyEncryption;
 
 const SigStructureFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_sigstructure_free(ptr)
 );
 /** */
-export class SigStructure {
+class SigStructure {
   static __wrap(ptr) {
     const obj = Object.create(SigStructure.prototype);
     obj.ptr = ptr;
@@ -3450,12 +3489,13 @@ export class SigStructure {
     return SigStructure.__wrap(ret);
   }
 }
+module.exports.SigStructure = SigStructure;
 
 const SignedMessageFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_signedmessage_free(ptr)
 );
 /** */
-export class SignedMessage {
+class SignedMessage {
   static __wrap(ptr) {
     const obj = Object.create(SignedMessage.prototype);
     obj.ptr = ptr;
@@ -3591,12 +3631,13 @@ export class SignedMessage {
     return ret === 0 ? undefined : COSESign1.__wrap(ret);
   }
 }
+module.exports.SignedMessage = SignedMessage;
 
 const TaggedCBORFinalization = new FinalizationRegistry((ptr) =>
   wasm.__wbg_taggedcbor_free(ptr)
 );
 /** */
-export class TaggedCBOR {
+class TaggedCBOR {
   static __wrap(ptr) {
     const obj = Object.create(TaggedCBOR.prototype);
     obj.ptr = ptr;
@@ -3679,189 +3720,40 @@ export class TaggedCBOR {
     return TaggedCBOR.__wrap(ret);
   }
 }
+module.exports.TaggedCBOR = TaggedCBOR;
 
-const imports = {
-  __wbindgen_placeholder__: {
-    __wbindgen_object_drop_ref: function (arg0) {
-      takeObject(arg0);
-    },
-    __wbindgen_string_new: function (arg0, arg1) {
-      const ret = getStringFromWasm0(arg0, arg1);
-      return addHeapObject(ret);
-    },
-    __wbindgen_debug_string: function (arg0, arg1) {
-      const ret = debugString(getObject(arg1));
-      const ptr0 = passStringToWasm0(
-        ret,
-        wasm.__wbindgen_malloc,
-        wasm.__wbindgen_realloc,
-      );
-      const len0 = WASM_VECTOR_LEN;
-      getInt32Memory0()[arg0 / 4 + 1] = len0;
-      getInt32Memory0()[arg0 / 4 + 0] = ptr0;
-    },
-    __wbindgen_throw: function (arg0, arg1) {
-      throw new Error(getStringFromWasm0(arg0, arg1));
-    },
-  },
+module.exports.__wbindgen_object_drop_ref = function (arg0) {
+  takeObject(arg0);
 };
 
-/**
- * Decompression callback
- *
- * @callback DecompressCallback
- * @param {Uint8Array} compressed
- * @return {Uint8Array} decompressed
- */
+module.exports.__wbindgen_string_new = function (arg0, arg1) {
+  const ret = getStringFromWasm0(arg0, arg1);
+  return addHeapObject(ret);
+};
 
-/**
- * Options for instantiating a Wasm instance.
- * @typedef {Object} InstantiateOptions
- * @property {URL=} url - Optional url to the Wasm file to instantiate.
- * @property {DecompressCallback=} decompress - Callback to decompress the
- * raw Wasm file bytes before instantiating.
- */
+module.exports.__wbindgen_debug_string = function (arg0, arg1) {
+  const ret = debugString(getObject(arg1));
+  const ptr0 = passStringToWasm0(
+    ret,
+    wasm.__wbindgen_malloc,
+    wasm.__wbindgen_realloc,
+  );
+  const len0 = WASM_VECTOR_LEN;
+  getInt32Memory0()[arg0 / 4 + 1] = len0;
+  getInt32Memory0()[arg0 / 4 + 0] = ptr0;
+};
 
-/** Instantiates an instance of the Wasm module returning its functions.
- * @remarks It is safe to call this multiple times and once successfully
- * loaded it will always return a reference to the same object.
- * @param {InstantiateOptions=} opts
- */
-export async function instantiate(opts) {
-  return (await instantiateWithInstance(opts)).exports;
-}
+module.exports.__wbindgen_throw = function (arg0, arg1) {
+  throw new Error(getStringFromWasm0(arg0, arg1));
+};
 
-let instanceWithExports;
-let lastLoadPromise;
+const path = require("path").join(
+  __dirname,
+  "../cardano_message_signing_bg.wasm",
+);
+const bytes = require("fs").readFileSync(path);
 
-/** Instantiates an instance of the Wasm module along with its exports.
- * @remarks It is safe to call this multiple times and once successfully
- * loaded it will always return a reference to the same object.
- * @param {InstantiateOptions=} opts
- * @returns {Promise<{
- *   instance: WebAssembly.Instance;
- *   exports: { BigNum : typeof BigNum ; CBORArray : typeof CBORArray ; CBORObject : typeof CBORObject ; CBORSpecial : typeof CBORSpecial ; CBORValue : typeof CBORValue ; COSEEncrypt : typeof COSEEncrypt ; COSEEncrypt0 : typeof COSEEncrypt0 ; COSEKey : typeof COSEKey ; COSERecipient : typeof COSERecipient ; COSERecipients : typeof COSERecipients ; COSESign : typeof COSESign ; COSESign1 : typeof COSESign1 ; COSESign1Builder : typeof COSESign1Builder ; COSESignBuilder : typeof COSESignBuilder ; COSESignature : typeof COSESignature ; COSESignatures : typeof COSESignatures ; CounterSignature : typeof CounterSignature ; EdDSA25519Key : typeof EdDSA25519Key ; HeaderMap : typeof HeaderMap ; Headers : typeof Headers ; Int : typeof Int ; Label : typeof Label ; Labels : typeof Labels ; PasswordEncryption : typeof PasswordEncryption ; ProtectedHeaderMap : typeof ProtectedHeaderMap ; PubKeyEncryption : typeof PubKeyEncryption ; SigStructure : typeof SigStructure ; SignedMessage : typeof SignedMessage ; TaggedCBOR : typeof TaggedCBOR  }
- * }>}
- */
-export function instantiateWithInstance(opts) {
-  if (instanceWithExports != null) {
-    return Promise.resolve(instanceWithExports);
-  }
-  if (lastLoadPromise == null) {
-    lastLoadPromise = (async () => {
-      try {
-        const instance = (await instantiateModule(opts ?? {})).instance;
-        wasm = instance.exports;
-        cachedInt32Memory0 = new Int32Array(wasm.memory.buffer);
-        cachedUint8Memory0 = new Uint8Array(wasm.memory.buffer);
-        instanceWithExports = {
-          instance,
-          exports: getWasmInstanceExports(),
-        };
-        return instanceWithExports;
-      } finally {
-        lastLoadPromise = null;
-      }
-    })();
-  }
-  return lastLoadPromise;
-}
-
-function getWasmInstanceExports() {
-  return {
-    BigNum,
-    CBORArray,
-    CBORObject,
-    CBORSpecial,
-    CBORValue,
-    COSEEncrypt,
-    COSEEncrypt0,
-    COSEKey,
-    COSERecipient,
-    COSERecipients,
-    COSESign,
-    COSESign1,
-    COSESign1Builder,
-    COSESignBuilder,
-    COSESignature,
-    COSESignatures,
-    CounterSignature,
-    EdDSA25519Key,
-    HeaderMap,
-    Headers,
-    Int,
-    Label,
-    Labels,
-    PasswordEncryption,
-    ProtectedHeaderMap,
-    PubKeyEncryption,
-    SigStructure,
-    SignedMessage,
-    TaggedCBOR,
-  };
-}
-
-/** Gets if the Wasm module has been instantiated. */
-export function isInstantiated() {
-  return instanceWithExports != null;
-}
-
-/**
- * @param {InstantiateOptions} opts
- */
-async function instantiateModule(opts) {
-  // Temporary exception for fresh framework
-  const wasmUrl = import.meta.url.includes("_frsh")
-    ? opts.url
-    : new URL("cardano_message_signing_bg.wasm", import.meta.url);
-  const decompress = opts.decompress;
-  const isFile = wasmUrl.protocol === "file:";
-
-  // make file urls work in Node via dnt
-  const isNode = globalThis.process?.versions?.node != null;
-  if (isNode && isFile) {
-    // requires fs to be set externally on globalThis
-    const wasmCode = fs.readFileSync(wasmUrl);
-    return WebAssembly.instantiate(
-      decompress ? decompress(wasmCode) : wasmCode,
-      imports,
-    );
-  }
-
-  switch (wasmUrl.protocol) {
-    case "": // relative URL
-    case "file:":
-    case "https:":
-    case "http:": {
-      if (isFile) {
-        if (typeof Deno !== "object") {
-          throw new Error("file urls are not supported in this environment");
-        }
-        if ("permissions" in Deno) {
-          await Deno.permissions.request({ name: "read", path: wasmUrl });
-        }
-      } else if (typeof Deno === "object" && "permissions" in Deno) {
-        await Deno.permissions.request({ name: "net", host: wasmUrl.host });
-      }
-      const wasmResponse = await fetch(wasmUrl);
-      if (decompress) {
-        const wasmCode = new Uint8Array(await wasmResponse.arrayBuffer());
-        return WebAssembly.instantiate(decompress(wasmCode), imports);
-      }
-      if (
-        isFile ||
-        wasmResponse.headers.get("content-type")?.toLowerCase()
-          .startsWith("application/wasm")
-      ) {
-        return WebAssembly.instantiateStreaming(wasmResponse, imports);
-      } else {
-        return WebAssembly.instantiate(
-          await wasmResponse.arrayBuffer(),
-          imports,
-        );
-      }
-    }
-    default:
-      throw new Error(`Unsupported protocol: ${wasmUrl.protocol}`);
-  }
-}
+const wasmModule = new WebAssembly.Module(bytes);
+const wasmInstance = new WebAssembly.Instance(wasmModule, imports);
+wasm = wasmInstance.exports;
+module.exports.__wasm = wasm;
