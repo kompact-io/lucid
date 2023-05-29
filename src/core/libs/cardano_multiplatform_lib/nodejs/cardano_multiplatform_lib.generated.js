@@ -1,7 +1,7 @@
 // @generated file from wasmbuild -- do not edit
 // deno-lint-ignore-file
 // deno-fmt-ignore-file
-// source-hash: b07ed2faeba2873a242d1dd43ca61e54c0dea790
+// source-hash: af75a833cd852bfe905f2f323fc0077290205bd5
 
 let imports = {};
 imports["__wbindgen_placeholder__"] = module.exports;
@@ -526,6 +526,13 @@ function getUint32Memory0() {
   return cachedUint32Memory0;
 }
 
+function passArray32ToWasm0(arg, malloc) {
+  const ptr = malloc(arg.length * 4);
+  getUint32Memory0().set(arg, ptr / 4);
+  WASM_VECTOR_LEN = arg.length;
+  return ptr;
+}
+
 function getArrayU32FromWasm0(ptr, len) {
   return getUint32Memory0().subarray(ptr / 4, ptr / 4 + len);
 }
@@ -842,7 +849,7 @@ function handleError(f, args) {
     wasm.__wbindgen_exn_store(addHeapObject(e));
   }
 }
-function __wbg_adapter_1371(arg0, arg1, arg2, arg3) {
+function __wbg_adapter_1372(arg0, arg1, arg2, arg3) {
   wasm.wasm_bindgen__convert__closures__invoke2_mut__h36afefe016e25d40(
     arg0,
     arg1,
@@ -18335,17 +18342,22 @@ class TransactionBuilder {
    * change_address is required here in order to determine the min ada requirement precisely
    * @param {TransactionUnspentOutputs} inputs
    * @param {Address} change_address
+   * @param {Uint32Array} weights
    */
-  add_inputs_from(inputs, change_address) {
+  add_inputs_from(inputs, change_address, weights) {
     try {
       const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
       _assertClass(inputs, TransactionUnspentOutputs);
       _assertClass(change_address, Address);
+      const ptr0 = passArray32ToWasm0(weights, wasm.__wbindgen_malloc);
+      const len0 = WASM_VECTOR_LEN;
       wasm.transactionbuilder_add_inputs_from(
         retptr,
         this.ptr,
         inputs.ptr,
         change_address.ptr,
+        ptr0,
+        len0,
       );
       var r0 = getInt32Memory0()[retptr / 4 + 0];
       var r1 = getInt32Memory0()[retptr / 4 + 1];
@@ -20376,6 +20388,13 @@ class TransactionOutput {
     _assertClass(amount, Value);
     const ret = wasm.transactionoutput_new(address.ptr, amount.ptr);
     return TransactionOutput.__wrap(ret);
+  }
+  /**
+   * @returns {number}
+   */
+  format() {
+    const ret = wasm.transactionoutput_format(this.ptr);
+    return ret;
   }
   /**
    * legacy support: serialize output as array array
@@ -23293,7 +23312,7 @@ module.exports.__wbg_new_9d3a9ce4282a18a8 = function (arg0, arg1) {
       const a = state0.a;
       state0.a = 0;
       try {
-        return __wbg_adapter_1371(a, state0.b, arg0, arg1);
+        return __wbg_adapter_1372(a, state0.b, arg0, arg1);
       } finally {
         state0.a = a;
       }
@@ -23416,7 +23435,7 @@ module.exports.__wbindgen_memory = function () {
   return addHeapObject(ret);
 };
 
-module.exports.__wbindgen_closure_wrapper5956 = function (arg0, arg1, arg2) {
+module.exports.__wbindgen_closure_wrapper5962 = function (arg0, arg1, arg2) {
   const ret = makeMutClosure(arg0, arg1, 194, __wbg_adapter_30);
   return addHeapObject(ret);
 };
