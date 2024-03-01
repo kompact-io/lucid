@@ -631,9 +631,12 @@ export class Emulator implements Provider {
         rewardAddress,
       );
       checkAndConsumeHash(stakeCredential!, "Reward", index);
-      if (this.chain[rewardAddress]?.delegation.rewards !== withdrawal) {
+      if (this.chain[rewardAddress] == undefined) {
+        this.chain[rewardAddress] = { registeredStake: false , delegation: { poolId : null, rewards : 0n } }
+      }
+      else if (this.chain[rewardAddress]?.delegation.rewards !== withdrawal) {
         throw new Error(
-          "Withdrawal amount doesn't match actual reward balance.",
+          "Withdrawal amount doesn't match actual reward balance.", 
         );
       }
       withdrawalRequests.push({ rewardAddress, withdrawal });

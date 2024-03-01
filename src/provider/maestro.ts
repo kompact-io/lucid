@@ -1,3 +1,4 @@
+// @ts-ignore
 import { C } from "../core/mod.ts";
 import { applyDoubleCborEncoding, fromHex } from "../utils/mod.ts";
 import {
@@ -101,12 +102,12 @@ export class Maestro implements Provider {
     let result: MaestroUtxos = [];
     let nextCursor = null;
     while (true) {
-      const appendCursorString = nextCursor === null ? "" : `&cursor=${nextCursor}`
-      const response = await fetch(
+      const appendCursorString : any = nextCursor === null ? "" : `&cursor=${nextCursor}`
+      const response : any = await fetch(
         `${this.url}${queryPredicate}/utxos?count=100${appendCursorString}`,
         { headers: this.commonHeaders() },
       );
-      const pageResult = await response.json();
+      const pageResult : any = await response.json();
       if (!response.ok) {
         throw new Error("Could not fetch UTxOs from Maestro. Received status code: " + response.status);
       }
