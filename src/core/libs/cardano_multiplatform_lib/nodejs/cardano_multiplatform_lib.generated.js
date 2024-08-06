@@ -1,7 +1,7 @@
 // @generated file from wasmbuild -- do not edit
 // deno-lint-ignore-file
 // deno-fmt-ignore-file
-// source-hash: a0bac7198823d07fa966fb7fbe3d6da6609e4a9b
+// source-hash: fd4080ca0a6a725e38d5fdaa963873304f5bd832
 
 let imports = {};
 imports["__wbindgen_placeholder__"] = module.exports;
@@ -849,7 +849,7 @@ function handleError(f, args) {
     wasm.__wbindgen_exn_store(addHeapObject(e));
   }
 }
-function __wbg_adapter_1682(arg0, arg1, arg2, arg3) {
+function __wbg_adapter_1683(arg0, arg1, arg2, arg3) {
   wasm.wasm_bindgen__convert__closures__invoke2_mut__h085ed4e2cb7af28f(
     arg0,
     arg1,
@@ -21933,7 +21933,7 @@ class TransactionBuilder {
    * @returns {AuxiliaryData | undefined}
    */
   auxiliary_data() {
-    const ret = wasm.transactionbuilder_auxiliary_data(this.ptr);
+    const ret = wasm.transaction_auxiliary_data(this.ptr);
     return ret === 0 ? undefined : AuxiliaryData.__wrap(ret);
   }
   /**
@@ -22670,6 +22670,42 @@ class TransactionBuilderConfigBuilder {
       this.ptr,
       blockfrost.ptr,
     );
+    return TransactionBuilderConfigBuilder.__wrap(ret);
+  }
+  /**
+   * @param {number} min_fee_reference_scripts_base
+   * @returns {TransactionBuilderConfigBuilder}
+   */
+  min_fee_reference_scripts_base(min_fee_reference_scripts_base) {
+    const ret = wasm
+      .transactionbuilderconfigbuilder_min_fee_reference_scripts_base(
+        this.ptr,
+        min_fee_reference_scripts_base,
+      );
+    return TransactionBuilderConfigBuilder.__wrap(ret);
+  }
+  /**
+   * @param {number} min_fee_reference_scripts_range
+   * @returns {TransactionBuilderConfigBuilder}
+   */
+  min_fee_reference_scripts_range(min_fee_reference_scripts_range) {
+    const ret = wasm
+      .transactionbuilderconfigbuilder_min_fee_reference_scripts_range(
+        this.ptr,
+        min_fee_reference_scripts_range,
+      );
+    return TransactionBuilderConfigBuilder.__wrap(ret);
+  }
+  /**
+   * @param {number} min_fee_reference_scripts_multiplier
+   * @returns {TransactionBuilderConfigBuilder}
+   */
+  min_fee_reference_scripts_multiplier(min_fee_reference_scripts_multiplier) {
+    const ret = wasm
+      .transactionbuilderconfigbuilder_min_fee_reference_scripts_multiplier(
+        this.ptr,
+        min_fee_reference_scripts_multiplier,
+      );
     return TransactionBuilderConfigBuilder.__wrap(ret);
   }
   /**
@@ -28384,10 +28420,6 @@ module.exports.__wbg_json_b9414eb18cb751d0 = function () {
   }, arguments);
 };
 
-module.exports.__wbg_log_7bb108d119bafbc1 = function (arg0) {
-  console.log(getObject(arg0));
-};
-
 module.exports.__wbg_self_e7c1f827057f6584 = function () {
   return handleError(function () {
     const ret = self.self;
@@ -28464,7 +28496,7 @@ module.exports.__wbg_new_9d3a9ce4282a18a8 = function (arg0, arg1) {
       const a = state0.a;
       state0.a = 0;
       try {
-        return __wbg_adapter_1682(a, state0.b, arg0, arg1);
+        return __wbg_adapter_1683(a, state0.b, arg0, arg1);
       } finally {
         state0.a = a;
       }
@@ -28587,8 +28619,8 @@ module.exports.__wbindgen_memory = function () {
   return addHeapObject(ret);
 };
 
-module.exports.__wbindgen_closure_wrapper6829 = function (arg0, arg1, arg2) {
-  const ret = makeMutClosure(arg0, arg1, 229, __wbg_adapter_30);
+module.exports.__wbindgen_closure_wrapper6821 = function (arg0, arg1, arg2) {
+  const ret = makeMutClosure(arg0, arg1, 225, __wbg_adapter_30);
   return addHeapObject(ret);
 };
 
