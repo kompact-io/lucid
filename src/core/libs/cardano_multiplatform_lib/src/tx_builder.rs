@@ -1,7 +1,6 @@
 use fraction::ToPrimitive;
 use fraction::Decimal;
 use itertools::Itertools;
-use web_sys::console::log_1;
 
 use super::fees;
 use super::utils;
@@ -282,7 +281,8 @@ fn min_fee(tx_builder: &mut TransactionBuilder) -> Result<Coin, JsError> {
 
         let power = size_of_reference_scripts.checked_div(range).unwrap();
         let mut cost_per_byte = base;
-        for _ in 1..power {
+        // NOTE: the `fraction` crate doesn't seem to have `pow` built in.
+        for _ in 0..power {
             cost_per_byte *= multiplier;
         }
         reference_scripts_tier_price = (Decimal::from(size_of_reference_scripts) * cost_per_byte)
