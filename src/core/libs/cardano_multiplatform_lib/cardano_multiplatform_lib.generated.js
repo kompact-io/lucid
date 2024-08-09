@@ -1,7 +1,4 @@
-let imports = {};
-imports['__wbindgen_placeholder__'] = module.exports;
-let wasm;
-const { TextDecoder, TextEncoder } = require(`util`);
+
 
 const heap = new Array(128).fill(undefined);
 
@@ -23,7 +20,7 @@ function takeObject(idx) {
     return ret;
 }
 
-let cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
+const cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
 
 cachedTextDecoder.decode();
 
@@ -51,20 +48,11 @@ function addHeapObject(obj) {
 
 let WASM_VECTOR_LEN = 0;
 
-let cachedTextEncoder = new TextEncoder('utf-8');
+const cachedTextEncoder = new TextEncoder('utf-8');
 
-const encodeString = (typeof cachedTextEncoder.encodeInto === 'function'
-    ? function (arg, view) {
+const encodeString = function (arg, view) {
     return cachedTextEncoder.encodeInto(arg, view);
-}
-    : function (arg, view) {
-    const buf = cachedTextEncoder.encode(arg);
-    view.set(buf);
-    return {
-        read: arg.length,
-        written: buf.length
-    };
-});
+};
 
 function passStringToWasm0(arg, malloc, realloc) {
 
@@ -234,7 +222,7 @@ function passArray8ToWasm0(arg, malloc) {
 * @param {string} data
 * @returns {string}
 */
-module.exports.encrypt_with_password = function(password, salt, nonce, data) {
+export function encrypt_with_password(password, salt, nonce, data) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         const ptr0 = passStringToWasm0(password, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -261,14 +249,14 @@ module.exports.encrypt_with_password = function(password, salt, nonce, data) {
         wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(ptr4, len4);
     }
-};
+}
 
 /**
 * @param {string} password
 * @param {string} data
 * @returns {string}
 */
-module.exports.decrypt_with_password = function(password, data) {
+export function decrypt_with_password(password, data) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         const ptr0 = passStringToWasm0(password, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -291,7 +279,7 @@ module.exports.decrypt_with_password = function(password, data) {
         wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(ptr2, len2);
     }
-};
+}
 
 /**
 * @param {Transaction} tx
@@ -299,7 +287,7 @@ module.exports.decrypt_with_password = function(password, data) {
 * @param {ExUnitPrices} ex_unit_prices
 * @returns {BigNum}
 */
-module.exports.min_fee = function(tx, linear_fee, ex_unit_prices) {
+export function min_fee(tx, linear_fee, ex_unit_prices) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         _assertClass(tx, Transaction);
@@ -316,24 +304,24 @@ module.exports.min_fee = function(tx, linear_fee, ex_unit_prices) {
     } finally {
         wasm.__wbindgen_add_to_stack_pointer(16);
     }
-};
+}
 
 /**
 * @param {Uint8Array} bytes
 * @returns {TransactionMetadatum}
 */
-module.exports.encode_arbitrary_bytes_as_metadatum = function(bytes) {
+export function encode_arbitrary_bytes_as_metadatum(bytes) {
     const ptr0 = passArray8ToWasm0(bytes, wasm.__wbindgen_malloc);
     const len0 = WASM_VECTOR_LEN;
     const ret = wasm.encode_arbitrary_bytes_as_metadatum(ptr0, len0);
     return TransactionMetadatum.__wrap(ret);
-};
+}
 
 /**
 * @param {TransactionMetadatum} metadata
 * @returns {Uint8Array}
 */
-module.exports.decode_arbitrary_bytes_from_metadatum = function(metadata) {
+export function decode_arbitrary_bytes_from_metadatum(metadata) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         _assertClass(metadata, TransactionMetadatum);
@@ -351,14 +339,14 @@ module.exports.decode_arbitrary_bytes_from_metadatum = function(metadata) {
     } finally {
         wasm.__wbindgen_add_to_stack_pointer(16);
     }
-};
+}
 
 /**
 * @param {string} json
 * @param {number} schema
 * @returns {TransactionMetadatum}
 */
-module.exports.encode_json_str_to_metadatum = function(json, schema) {
+export function encode_json_str_to_metadatum(json, schema) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         const ptr0 = passStringToWasm0(json, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -374,14 +362,14 @@ module.exports.encode_json_str_to_metadatum = function(json, schema) {
     } finally {
         wasm.__wbindgen_add_to_stack_pointer(16);
     }
-};
+}
 
 /**
 * @param {TransactionMetadatum} metadatum
 * @param {number} schema
 * @returns {string}
 */
-module.exports.decode_metadatum_to_json_str = function(metadatum, schema) {
+export function decode_metadatum_to_json_str(metadatum, schema) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         _assertClass(metadatum, TransactionMetadatum);
@@ -401,14 +389,14 @@ module.exports.decode_metadatum_to_json_str = function(metadatum, schema) {
         wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(ptr0, len0);
     }
-};
+}
 
 /**
 * @param {string} json
 * @param {number} schema
 * @returns {PlutusData}
 */
-module.exports.encode_json_str_to_plutus_datum = function(json, schema) {
+export function encode_json_str_to_plutus_datum(json, schema) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         const ptr0 = passStringToWasm0(json, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -424,14 +412,14 @@ module.exports.encode_json_str_to_plutus_datum = function(json, schema) {
     } finally {
         wasm.__wbindgen_add_to_stack_pointer(16);
     }
-};
+}
 
 /**
 * @param {PlutusData} datum
 * @param {number} schema
 * @returns {string}
 */
-module.exports.decode_plutus_datum_to_json_str = function(datum, schema) {
+export function decode_plutus_datum_to_json_str(datum, schema) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         _assertClass(datum, PlutusData);
@@ -451,7 +439,7 @@ module.exports.decode_plutus_datum_to_json_str = function(datum, schema) {
         wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(ptr0, len0);
     }
-};
+}
 
 let cachedUint32Memory0 = null;
 
@@ -478,13 +466,13 @@ function getArrayU32FromWasm0(ptr, len) {
 * @param {LegacyDaedalusPrivateKey} key
 * @returns {BootstrapWitness}
 */
-module.exports.make_daedalus_bootstrap_witness = function(tx_body_hash, addr, key) {
+export function make_daedalus_bootstrap_witness(tx_body_hash, addr, key) {
     _assertClass(tx_body_hash, TransactionHash);
     _assertClass(addr, ByronAddress);
     _assertClass(key, LegacyDaedalusPrivateKey);
     const ret = wasm.make_daedalus_bootstrap_witness(tx_body_hash.ptr, addr.ptr, key.ptr);
     return BootstrapWitness.__wrap(ret);
-};
+}
 
 /**
 * @param {TransactionHash} tx_body_hash
@@ -492,61 +480,61 @@ module.exports.make_daedalus_bootstrap_witness = function(tx_body_hash, addr, ke
 * @param {Bip32PrivateKey} key
 * @returns {BootstrapWitness}
 */
-module.exports.make_icarus_bootstrap_witness = function(tx_body_hash, addr, key) {
+export function make_icarus_bootstrap_witness(tx_body_hash, addr, key) {
     _assertClass(tx_body_hash, TransactionHash);
     _assertClass(addr, ByronAddress);
     _assertClass(key, Bip32PrivateKey);
     const ret = wasm.make_icarus_bootstrap_witness(tx_body_hash.ptr, addr.ptr, key.ptr);
     return BootstrapWitness.__wrap(ret);
-};
+}
 
 /**
 * @param {TransactionHash} tx_body_hash
 * @param {PrivateKey} sk
 * @returns {Vkeywitness}
 */
-module.exports.make_vkey_witness = function(tx_body_hash, sk) {
+export function make_vkey_witness(tx_body_hash, sk) {
     _assertClass(tx_body_hash, TransactionHash);
     _assertClass(sk, PrivateKey);
     const ret = wasm.make_vkey_witness(tx_body_hash.ptr, sk.ptr);
     return Vkeywitness.__wrap(ret);
-};
+}
 
 /**
 * @param {AuxiliaryData} auxiliary_data
 * @returns {AuxiliaryDataHash}
 */
-module.exports.hash_auxiliary_data = function(auxiliary_data) {
+export function hash_auxiliary_data(auxiliary_data) {
     _assertClass(auxiliary_data, AuxiliaryData);
     const ret = wasm.hash_auxiliary_data(auxiliary_data.ptr);
     return AuxiliaryDataHash.__wrap(ret);
-};
+}
 
 /**
 * @param {TransactionBody} tx_body
 * @returns {TransactionHash}
 */
-module.exports.hash_transaction = function(tx_body) {
+export function hash_transaction(tx_body) {
     _assertClass(tx_body, TransactionBody);
     const ret = wasm.hash_transaction(tx_body.ptr);
     return TransactionHash.__wrap(ret);
-};
+}
 
 /**
 * @param {PlutusData} plutus_data
 * @returns {DataHash}
 */
-module.exports.hash_plutus_data = function(plutus_data) {
+export function hash_plutus_data(plutus_data) {
     _assertClass(plutus_data, PlutusData);
     const ret = wasm.hash_plutus_data(plutus_data.ptr);
     return DataHash.__wrap(ret);
-};
+}
 
 /**
 * @param {Uint8Array} data
 * @returns {Uint8Array}
 */
-module.exports.hash_blake2b256 = function(data) {
+export function hash_blake2b256(data) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         const ptr0 = passArray8ToWasm0(data, wasm.__wbindgen_malloc);
@@ -560,13 +548,13 @@ module.exports.hash_blake2b256 = function(data) {
     } finally {
         wasm.__wbindgen_add_to_stack_pointer(16);
     }
-};
+}
 
 /**
 * @param {Uint8Array} data
 * @returns {Uint8Array}
 */
-module.exports.hash_blake2b224 = function(data) {
+export function hash_blake2b224(data) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         const ptr0 = passArray8ToWasm0(data, wasm.__wbindgen_malloc);
@@ -580,7 +568,7 @@ module.exports.hash_blake2b224 = function(data) {
     } finally {
         wasm.__wbindgen_add_to_stack_pointer(16);
     }
-};
+}
 
 /**
 * @param {Redeemers} redeemers
@@ -588,7 +576,7 @@ module.exports.hash_blake2b224 = function(data) {
 * @param {PlutusList | undefined} datums
 * @returns {ScriptDataHash}
 */
-module.exports.hash_script_data = function(redeemers, cost_models, datums) {
+export function hash_script_data(redeemers, cost_models, datums) {
     _assertClass(redeemers, Redeemers);
     _assertClass(cost_models, Costmdls);
     let ptr0 = 0;
@@ -598,7 +586,7 @@ module.exports.hash_script_data = function(redeemers, cost_models, datums) {
     }
     const ret = wasm.hash_script_data(redeemers.ptr, cost_models.ptr, ptr0);
     return ScriptDataHash.__wrap(ret);
-};
+}
 
 /**
 * @param {TransactionBody} txbody
@@ -606,7 +594,7 @@ module.exports.hash_script_data = function(redeemers, cost_models, datums) {
 * @param {BigNum} key_deposit
 * @returns {Value}
 */
-module.exports.get_implicit_input = function(txbody, pool_deposit, key_deposit) {
+export function get_implicit_input(txbody, pool_deposit, key_deposit) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         _assertClass(txbody, TransactionBody);
@@ -623,7 +611,7 @@ module.exports.get_implicit_input = function(txbody, pool_deposit, key_deposit) 
     } finally {
         wasm.__wbindgen_add_to_stack_pointer(16);
     }
-};
+}
 
 /**
 * @param {TransactionBody} txbody
@@ -631,7 +619,7 @@ module.exports.get_implicit_input = function(txbody, pool_deposit, key_deposit) 
 * @param {BigNum} key_deposit
 * @returns {BigNum}
 */
-module.exports.get_deposit = function(txbody, pool_deposit, key_deposit) {
+export function get_deposit(txbody, pool_deposit, key_deposit) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         _assertClass(txbody, TransactionBody);
@@ -648,14 +636,14 @@ module.exports.get_deposit = function(txbody, pool_deposit, key_deposit) {
     } finally {
         wasm.__wbindgen_add_to_stack_pointer(16);
     }
-};
+}
 
 /**
 * @param {TransactionOutput} output
 * @param {BigNum} coins_per_utxo_byte
 * @returns {BigNum}
 */
-module.exports.min_ada_required = function(output, coins_per_utxo_byte) {
+export function min_ada_required(output, coins_per_utxo_byte) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         _assertClass(output, TransactionOutput);
@@ -671,7 +659,7 @@ module.exports.min_ada_required = function(output, coins_per_utxo_byte) {
     } finally {
         wasm.__wbindgen_add_to_stack_pointer(16);
     }
-};
+}
 
 /**
 * Receives a script JSON string
@@ -687,7 +675,7 @@ module.exports.min_ada_required = function(output, coins_per_utxo_byte) {
 * @param {number} schema
 * @returns {NativeScript}
 */
-module.exports.encode_json_str_to_native_script = function(json, self_xpub, schema) {
+export function encode_json_str_to_native_script(json, self_xpub, schema) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         const ptr0 = passStringToWasm0(json, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
@@ -705,14 +693,14 @@ module.exports.encode_json_str_to_native_script = function(json, self_xpub, sche
     } finally {
         wasm.__wbindgen_add_to_stack_pointer(16);
     }
-};
+}
 
 /**
 * @param {PlutusList} params
 * @param {PlutusScript} plutus_script
 * @returns {PlutusScript}
 */
-module.exports.apply_params_to_plutus_script = function(params, plutus_script) {
+export function apply_params_to_plutus_script(params, plutus_script) {
     try {
         const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
         _assertClass(params, PlutusList);
@@ -729,7 +717,7 @@ module.exports.apply_params_to_plutus_script = function(params, plutus_script) {
     } finally {
         wasm.__wbindgen_add_to_stack_pointer(16);
     }
-};
+}
 
 function handleError(f, args) {
     try {
@@ -744,34 +732,34 @@ function __wbg_adapter_1683(arg0, arg1, arg2, arg3) {
 
 /**
 */
-module.exports.StakeCredKind = Object.freeze({ Key:0,"0":"Key",Script:1,"1":"Script", });
+export const StakeCredKind = Object.freeze({ Key:0,"0":"Key",Script:1,"1":"Script", });
 /**
 */
-module.exports.GovernanceActionKind = Object.freeze({ ParameterChangeAction:0,"0":"ParameterChangeAction",HardForkInitiationAction:1,"1":"HardForkInitiationAction",TreasuryWithdrawalsAction:2,"2":"TreasuryWithdrawalsAction",NoConfidence:3,"3":"NoConfidence",NewCommittee:4,"4":"NewCommittee",NewConstitution:5,"5":"NewConstitution",InfoAction:6,"6":"InfoAction", });
+export const GovernanceActionKind = Object.freeze({ ParameterChangeAction:0,"0":"ParameterChangeAction",HardForkInitiationAction:1,"1":"HardForkInitiationAction",TreasuryWithdrawalsAction:2,"2":"TreasuryWithdrawalsAction",NoConfidence:3,"3":"NoConfidence",NewCommittee:4,"4":"NewCommittee",NewConstitution:5,"5":"NewConstitution",InfoAction:6,"6":"InfoAction", });
 /**
 */
-module.exports.VoterKind = Object.freeze({ CommitteeHotKeyHash:0,"0":"CommitteeHotKeyHash",CommitteeHotScriptHash:1,"1":"CommitteeHotScriptHash",DrepKeyHash:2,"2":"DrepKeyHash",DrepScriptHash:3,"3":"DrepScriptHash",StakingPoolKeyHash:4,"4":"StakingPoolKeyHash", });
+export const VoterKind = Object.freeze({ CommitteeHotKeyHash:0,"0":"CommitteeHotKeyHash",CommitteeHotScriptHash:1,"1":"CommitteeHotScriptHash",DrepKeyHash:2,"2":"DrepKeyHash",DrepScriptHash:3,"3":"DrepScriptHash",StakingPoolKeyHash:4,"4":"StakingPoolKeyHash", });
 /**
 */
-module.exports.VoteKind = Object.freeze({ No:0,"0":"No",Yes:1,"1":"Yes",Abstain:2,"2":"Abstain", });
+export const VoteKind = Object.freeze({ No:0,"0":"No",Yes:1,"1":"Yes",Abstain:2,"2":"Abstain", });
 /**
 */
-module.exports.DrepKind = Object.freeze({ KeyHash:0,"0":"KeyHash",ScriptHash:1,"1":"ScriptHash",Abstain:2,"2":"Abstain",NoConfidence:3,"3":"NoConfidence", });
+export const DrepKind = Object.freeze({ KeyHash:0,"0":"KeyHash",ScriptHash:1,"1":"ScriptHash",Abstain:2,"2":"Abstain",NoConfidence:3,"3":"NoConfidence", });
 /**
 */
-module.exports.TransactionMetadatumKind = Object.freeze({ MetadataMap:0,"0":"MetadataMap",MetadataList:1,"1":"MetadataList",Int:2,"2":"Int",Bytes:3,"3":"Bytes",Text:4,"4":"Text", });
+export const TransactionMetadatumKind = Object.freeze({ MetadataMap:0,"0":"MetadataMap",MetadataList:1,"1":"MetadataList",Int:2,"2":"Int",Bytes:3,"3":"Bytes",Text:4,"4":"Text", });
 /**
 */
-module.exports.MetadataJsonSchema = Object.freeze({ NoConversions:0,"0":"NoConversions",BasicConversions:1,"1":"BasicConversions",DetailedSchema:2,"2":"DetailedSchema", });
+export const MetadataJsonSchema = Object.freeze({ NoConversions:0,"0":"NoConversions",BasicConversions:1,"1":"BasicConversions",DetailedSchema:2,"2":"DetailedSchema", });
 /**
 */
-module.exports.LanguageKind = Object.freeze({ PlutusV1:0,"0":"PlutusV1",PlutusV2:1,"1":"PlutusV2",PlutusV3:2,"2":"PlutusV3", });
+export const LanguageKind = Object.freeze({ PlutusV1:0,"0":"PlutusV1",PlutusV2:1,"1":"PlutusV2",PlutusV3:2,"2":"PlutusV3", });
 /**
 */
-module.exports.PlutusDataKind = Object.freeze({ ConstrPlutusData:0,"0":"ConstrPlutusData",Map:1,"1":"Map",List:2,"2":"List",Integer:3,"3":"Integer",Bytes:4,"4":"Bytes", });
+export const PlutusDataKind = Object.freeze({ ConstrPlutusData:0,"0":"ConstrPlutusData",Map:1,"1":"Map",List:2,"2":"List",Integer:3,"3":"Integer",Bytes:4,"4":"Bytes", });
 /**
 */
-module.exports.RedeemerTagKind = Object.freeze({ Spend:0,"0":"Spend",Mint:1,"1":"Mint",Cert:2,"2":"Cert",Reward:3,"3":"Reward",Drep:4,"4":"Drep", });
+export const RedeemerTagKind = Object.freeze({ Spend:0,"0":"Spend",Mint:1,"1":"Mint",Cert:2,"2":"Cert",Reward:3,"3":"Reward",Drep:4,"4":"Drep", });
 /**
 * JSON <-> PlutusData conversion schemas.
 * Follows ScriptDataJsonSchema in cardano-cli defined at:
@@ -783,7 +771,7 @@ module.exports.RedeemerTagKind = Object.freeze({ Spend:0,"0":"Spend",Mint:1,"1":
 *      cardano-cli seems to support these however but it seems to be different than just 0-padding
 *      on either side when tested so proceed with caution
 */
-module.exports.PlutusDatumSchema = Object.freeze({
+export const PlutusDatumSchema = Object.freeze({
 /**
 * ScriptDataJsonNoSchema in cardano-node.
 *
@@ -825,10 +813,10 @@ BasicConversions:0,"0":"BasicConversions",
 DetailedSchema:1,"1":"DetailedSchema", });
 /**
 */
-module.exports.ScriptKind = Object.freeze({ NativeScript:0,"0":"NativeScript",PlutusScriptV1:1,"1":"PlutusScriptV1",PlutusScriptV2:2,"2":"PlutusScriptV2",PlutusScriptV3:3,"3":"PlutusScriptV3", });
+export const ScriptKind = Object.freeze({ NativeScript:0,"0":"NativeScript",PlutusScriptV1:1,"1":"PlutusScriptV1",PlutusScriptV2:2,"2":"PlutusScriptV2",PlutusScriptV3:3,"3":"PlutusScriptV3", });
 /**
 */
-module.exports.DatumKind = Object.freeze({ Hash:0,"0":"Hash",Data:1,"1":"Data", });
+export const DatumKind = Object.freeze({ Hash:0,"0":"Hash",Data:1,"1":"Data", });
 /**
 * Each new language uses a different namespace for hashing its script
 * This is because you could have a language where the same bytes have different semantics
@@ -836,35 +824,35 @@ module.exports.DatumKind = Object.freeze({ Hash:0,"0":"Hash",Data:1,"1":"Data", 
 * Note that the enum value here is different than the enum value for deciding the cost model of a script
 * https://github.com/input-output-hk/cardano-ledger/blob/9c3b4737b13b30f71529e76c5330f403165e28a6/eras/alonzo/impl/src/Cardano/Ledger/Alonzo.hs#L127
 */
-module.exports.ScriptHashNamespace = Object.freeze({ NativeScript:0,"0":"NativeScript",PlutusV1:1,"1":"PlutusV1",PlutusV2:2,"2":"PlutusV2", });
+export const ScriptHashNamespace = Object.freeze({ NativeScript:0,"0":"NativeScript",PlutusV1:1,"1":"PlutusV1",PlutusV2:2,"2":"PlutusV2", });
 /**
 * Used to choose the schema for a script JSON string
 */
-module.exports.ScriptSchema = Object.freeze({ Wallet:0,"0":"Wallet",Node:1,"1":"Node", });
+export const ScriptSchema = Object.freeze({ Wallet:0,"0":"Wallet",Node:1,"1":"Node", });
 /**
 */
-module.exports.ScriptWitnessKind = Object.freeze({ NativeWitness:0,"0":"NativeWitness",PlutusWitness:1,"1":"PlutusWitness", });
+export const ScriptWitnessKind = Object.freeze({ NativeWitness:0,"0":"NativeWitness",PlutusWitness:1,"1":"PlutusWitness", });
 /**
 */
-module.exports.CertificateKind = Object.freeze({ StakeRegistration:0,"0":"StakeRegistration",StakeDeregistration:1,"1":"StakeDeregistration",StakeDelegation:2,"2":"StakeDelegation",PoolRegistration:3,"3":"PoolRegistration",PoolRetirement:4,"4":"PoolRetirement",GenesisKeyDelegation:5,"5":"GenesisKeyDelegation",MoveInstantaneousRewardsCert:6,"6":"MoveInstantaneousRewardsCert",RegCert:7,"7":"RegCert",UnregCert:8,"8":"UnregCert",VoteDelegCert:9,"9":"VoteDelegCert",StakeVoteDelegCert:10,"10":"StakeVoteDelegCert",StakeRegDelegCert:11,"11":"StakeRegDelegCert",VoteRegDelegCert:12,"12":"VoteRegDelegCert",StakeVoteRegDelegCert:13,"13":"StakeVoteRegDelegCert",RegCommitteeHotKeyCert:14,"14":"RegCommitteeHotKeyCert",UnregCommitteeHotKeyCert:15,"15":"UnregCommitteeHotKeyCert",RegDrepCert:16,"16":"RegDrepCert",UnregDrepCert:17,"17":"UnregDrepCert", });
+export const CertificateKind = Object.freeze({ StakeRegistration:0,"0":"StakeRegistration",StakeDeregistration:1,"1":"StakeDeregistration",StakeDelegation:2,"2":"StakeDelegation",PoolRegistration:3,"3":"PoolRegistration",PoolRetirement:4,"4":"PoolRetirement",GenesisKeyDelegation:5,"5":"GenesisKeyDelegation",MoveInstantaneousRewardsCert:6,"6":"MoveInstantaneousRewardsCert",RegCert:7,"7":"RegCert",UnregCert:8,"8":"UnregCert",VoteDelegCert:9,"9":"VoteDelegCert",StakeVoteDelegCert:10,"10":"StakeVoteDelegCert",StakeRegDelegCert:11,"11":"StakeRegDelegCert",VoteRegDelegCert:12,"12":"VoteRegDelegCert",StakeVoteRegDelegCert:13,"13":"StakeVoteRegDelegCert",RegCommitteeHotKeyCert:14,"14":"RegCommitteeHotKeyCert",UnregCommitteeHotKeyCert:15,"15":"UnregCommitteeHotKeyCert",RegDrepCert:16,"16":"RegDrepCert",UnregDrepCert:17,"17":"UnregDrepCert", });
 /**
 */
-module.exports.MIRPot = Object.freeze({ Reserves:0,"0":"Reserves",Treasury:1,"1":"Treasury", });
+export const MIRPot = Object.freeze({ Reserves:0,"0":"Reserves",Treasury:1,"1":"Treasury", });
 /**
 */
-module.exports.MIRKind = Object.freeze({ ToOtherPot:0,"0":"ToOtherPot",ToStakeCredentials:1,"1":"ToStakeCredentials", });
+export const MIRKind = Object.freeze({ ToOtherPot:0,"0":"ToOtherPot",ToStakeCredentials:1,"1":"ToStakeCredentials", });
 /**
 */
-module.exports.RelayKind = Object.freeze({ SingleHostAddr:0,"0":"SingleHostAddr",SingleHostName:1,"1":"SingleHostName",MultiHostName:2,"2":"MultiHostName", });
+export const RelayKind = Object.freeze({ SingleHostAddr:0,"0":"SingleHostAddr",SingleHostName:1,"1":"SingleHostName",MultiHostName:2,"2":"MultiHostName", });
 /**
 */
-module.exports.NativeScriptKind = Object.freeze({ ScriptPubkey:0,"0":"ScriptPubkey",ScriptAll:1,"1":"ScriptAll",ScriptAny:2,"2":"ScriptAny",ScriptNOfK:3,"3":"ScriptNOfK",TimelockStart:4,"4":"TimelockStart",TimelockExpiry:5,"5":"TimelockExpiry", });
+export const NativeScriptKind = Object.freeze({ ScriptPubkey:0,"0":"ScriptPubkey",ScriptAll:1,"1":"ScriptAll",ScriptAny:2,"2":"ScriptAny",ScriptNOfK:3,"3":"ScriptNOfK",TimelockStart:4,"4":"TimelockStart",TimelockExpiry:5,"5":"TimelockExpiry", });
 /**
 */
-module.exports.NetworkIdKind = Object.freeze({ Testnet:0,"0":"Testnet",Mainnet:1,"1":"Mainnet", });
+export const NetworkIdKind = Object.freeze({ Testnet:0,"0":"Testnet",Mainnet:1,"1":"Mainnet", });
 /**
 */
-class Address {
+export class Address {
 
     static __wrap(ptr) {
         const obj = Object.create(Address.prototype);
@@ -1084,10 +1072,9 @@ class Address {
         return ret === 0 ? undefined : BaseAddress.__wrap(ret);
     }
 }
-module.exports.Address = Address;
 /**
 */
-class Anchor {
+export class Anchor {
 
     static __wrap(ptr) {
         const obj = Object.create(Anchor.prototype);
@@ -1232,10 +1219,9 @@ class Anchor {
         return Anchor.__wrap(ret);
     }
 }
-module.exports.Anchor = Anchor;
 /**
 */
-class AssetName {
+export class AssetName {
 
     static __wrap(ptr) {
         const obj = Object.create(AssetName.prototype);
@@ -1392,10 +1378,9 @@ class AssetName {
         }
     }
 }
-module.exports.AssetName = AssetName;
 /**
 */
-class AssetNames {
+export class AssetNames {
 
     static __wrap(ptr) {
         const obj = Object.create(AssetNames.prototype);
@@ -1544,10 +1529,9 @@ class AssetNames {
         wasm.assetnames_add(this.ptr, elem.ptr);
     }
 }
-module.exports.AssetNames = AssetNames;
 /**
 */
-class Assets {
+export class Assets {
 
     static __wrap(ptr) {
         const obj = Object.create(Assets.prototype);
@@ -1708,10 +1692,9 @@ class Assets {
         return AssetNames.__wrap(ret);
     }
 }
-module.exports.Assets = Assets;
 /**
 */
-class AuxiliaryData {
+export class AuxiliaryData {
 
     static __wrap(ptr) {
         const obj = Object.create(AuxiliaryData.prototype);
@@ -1908,10 +1891,9 @@ class AuxiliaryData {
         wasm.auxiliarydata_set_plutus_v3_scripts(this.ptr, plutus_scripts.ptr);
     }
 }
-module.exports.AuxiliaryData = AuxiliaryData;
 /**
 */
-class AuxiliaryDataHash {
+export class AuxiliaryDataHash {
 
     static __wrap(ptr) {
         const obj = Object.create(AuxiliaryDataHash.prototype);
@@ -2052,10 +2034,9 @@ class AuxiliaryDataHash {
         }
     }
 }
-module.exports.AuxiliaryDataHash = AuxiliaryDataHash;
 /**
 */
-class AuxiliaryDataSet {
+export class AuxiliaryDataSet {
 
     static __wrap(ptr) {
         const obj = Object.create(AuxiliaryDataSet.prototype);
@@ -2117,10 +2098,9 @@ class AuxiliaryDataSet {
         return TransactionIndexes.__wrap(ret);
     }
 }
-module.exports.AuxiliaryDataSet = AuxiliaryDataSet;
 /**
 */
-class BaseAddress {
+export class BaseAddress {
 
     static __wrap(ptr) {
         const obj = Object.create(BaseAddress.prototype);
@@ -2183,10 +2163,9 @@ class BaseAddress {
         return ret === 0 ? undefined : BaseAddress.__wrap(ret);
     }
 }
-module.exports.BaseAddress = BaseAddress;
 /**
 */
-class BigInt {
+export class BigInt {
 
     static __wrap(ptr) {
         const obj = Object.create(BigInt.prototype);
@@ -2294,10 +2273,9 @@ class BigInt {
         }
     }
 }
-module.exports.BigInt = BigInt;
 /**
 */
-class BigNum {
+export class BigNum {
 
     static __wrap(ptr) {
         const obj = Object.create(BigNum.prototype);
@@ -2524,10 +2502,9 @@ class BigNum {
         return ret;
     }
 }
-module.exports.BigNum = BigNum;
 /**
 */
-class Bip32PrivateKey {
+export class Bip32PrivateKey {
 
     static __wrap(ptr) {
         const obj = Object.create(Bip32PrivateKey.prototype);
@@ -2754,10 +2731,9 @@ class Bip32PrivateKey {
         }
     }
 }
-module.exports.Bip32PrivateKey = Bip32PrivateKey;
 /**
 */
-class Bip32PublicKey {
+export class Bip32PublicKey {
 
     static __wrap(ptr) {
         const obj = Object.create(Bip32PublicKey.prototype);
@@ -2916,10 +2892,9 @@ class Bip32PublicKey {
         }
     }
 }
-module.exports.Bip32PublicKey = Bip32PublicKey;
 /**
 */
-class Block {
+export class Block {
 
     static __wrap(ptr) {
         const obj = Object.create(Block.prototype);
@@ -3091,10 +3066,9 @@ class Block {
         return Block.__wrap(ret);
     }
 }
-module.exports.Block = Block;
 /**
 */
-class BlockHash {
+export class BlockHash {
 
     static __wrap(ptr) {
         const obj = Object.create(BlockHash.prototype);
@@ -3235,10 +3209,9 @@ class BlockHash {
         }
     }
 }
-module.exports.BlockHash = BlockHash;
 /**
 */
-class Blockfrost {
+export class Blockfrost {
 
     static __wrap(ptr) {
         const obj = Object.create(Blockfrost.prototype);
@@ -3302,10 +3275,9 @@ class Blockfrost {
         }
     }
 }
-module.exports.Blockfrost = Blockfrost;
 /**
 */
-class BootstrapWitness {
+export class BootstrapWitness {
 
     static __wrap(ptr) {
         const obj = Object.create(BootstrapWitness.prototype);
@@ -3488,10 +3460,9 @@ class BootstrapWitness {
         return BootstrapWitness.__wrap(ret);
     }
 }
-module.exports.BootstrapWitness = BootstrapWitness;
 /**
 */
-class BootstrapWitnesses {
+export class BootstrapWitnesses {
 
     static __wrap(ptr) {
         const obj = Object.create(BootstrapWitnesses.prototype);
@@ -3541,10 +3512,9 @@ class BootstrapWitnesses {
         wasm.bootstrapwitnesses_add(this.ptr, elem.ptr);
     }
 }
-module.exports.BootstrapWitnesses = BootstrapWitnesses;
 /**
 */
-class ByronAddress {
+export class ByronAddress {
 
     static __wrap(ptr) {
         const obj = Object.create(ByronAddress.prototype);
@@ -3717,10 +3687,9 @@ class ByronAddress {
         return ret === 0 ? undefined : ByronAddress.__wrap(ret);
     }
 }
-module.exports.ByronAddress = ByronAddress;
 /**
 */
-class Certificate {
+export class Certificate {
 
     static __wrap(ptr) {
         const obj = Object.create(Certificate.prototype);
@@ -4036,10 +4005,9 @@ class Certificate {
         return ret === 0 ? undefined : UnregDrepCert.__wrap(ret);
     }
 }
-module.exports.Certificate = Certificate;
 /**
 */
-class Certificates {
+export class Certificates {
 
     static __wrap(ptr) {
         const obj = Object.create(Certificates.prototype);
@@ -4188,10 +4156,9 @@ class Certificates {
         wasm.certificates_add(this.ptr, elem.ptr);
     }
 }
-module.exports.Certificates = Certificates;
 /**
 */
-class ConstrPlutusData {
+export class ConstrPlutusData {
 
     static __wrap(ptr) {
         const obj = Object.create(ConstrPlutusData.prototype);
@@ -4274,10 +4241,9 @@ class ConstrPlutusData {
         return ConstrPlutusData.__wrap(ret);
     }
 }
-module.exports.ConstrPlutusData = ConstrPlutusData;
 /**
 */
-class CostModel {
+export class CostModel {
 
     static __wrap(ptr) {
         const obj = Object.create(CostModel.prototype);
@@ -4403,10 +4369,9 @@ class CostModel {
         return ret >>> 0;
     }
 }
-module.exports.CostModel = CostModel;
 /**
 */
-class Costmdls {
+export class Costmdls {
 
     static __wrap(ptr) {
         const obj = Object.create(Costmdls.prototype);
@@ -4505,10 +4470,9 @@ class Costmdls {
         return Languages.__wrap(ret);
     }
 }
-module.exports.Costmdls = Costmdls;
 /**
 */
-class DNSRecordAorAAAA {
+export class DNSRecordAorAAAA {
 
     static __wrap(ptr) {
         const obj = Object.create(DNSRecordAorAAAA.prototype);
@@ -4602,10 +4566,9 @@ class DNSRecordAorAAAA {
         }
     }
 }
-module.exports.DNSRecordAorAAAA = DNSRecordAorAAAA;
 /**
 */
-class DNSRecordSRV {
+export class DNSRecordSRV {
 
     static __wrap(ptr) {
         const obj = Object.create(DNSRecordSRV.prototype);
@@ -4699,10 +4662,9 @@ class DNSRecordSRV {
         }
     }
 }
-module.exports.DNSRecordSRV = DNSRecordSRV;
 /**
 */
-class Data {
+export class Data {
 
     static __wrap(ptr) {
         const obj = Object.create(Data.prototype);
@@ -4838,10 +4800,9 @@ class Data {
         return PlutusData.__wrap(ret);
     }
 }
-module.exports.Data = Data;
 /**
 */
-class DataHash {
+export class DataHash {
 
     static __wrap(ptr) {
         const obj = Object.create(DataHash.prototype);
@@ -4982,10 +4943,9 @@ class DataHash {
         }
     }
 }
-module.exports.DataHash = DataHash;
 /**
 */
-class Datum {
+export class Datum {
 
     static __wrap(ptr) {
         const obj = Object.create(Datum.prototype);
@@ -5144,10 +5104,9 @@ class Datum {
         return ret === 0 ? undefined : Data.__wrap(ret);
     }
 }
-module.exports.Datum = Datum;
 /**
 */
-class Drep {
+export class Drep {
 
     static __wrap(ptr) {
         const obj = Object.create(Drep.prototype);
@@ -5320,10 +5279,9 @@ class Drep {
         return ret === 0 ? undefined : ScriptHash.__wrap(ret);
     }
 }
-module.exports.Drep = Drep;
 /**
 */
-class DrepVotingThresholds {
+export class DrepVotingThresholds {
 
     static __wrap(ptr) {
         const obj = Object.create(DrepVotingThresholds.prototype);
@@ -5540,10 +5498,9 @@ class DrepVotingThresholds {
         return DrepVotingThresholds.__wrap(ret);
     }
 }
-module.exports.DrepVotingThresholds = DrepVotingThresholds;
 /**
 */
-class Ed25519KeyHash {
+export class Ed25519KeyHash {
 
     static __wrap(ptr) {
         const obj = Object.create(Ed25519KeyHash.prototype);
@@ -5684,10 +5641,9 @@ class Ed25519KeyHash {
         }
     }
 }
-module.exports.Ed25519KeyHash = Ed25519KeyHash;
 /**
 */
-class Ed25519KeyHashes {
+export class Ed25519KeyHashes {
 
     static __wrap(ptr) {
         const obj = Object.create(Ed25519KeyHashes.prototype);
@@ -5836,10 +5792,9 @@ class Ed25519KeyHashes {
         wasm.ed25519keyhashes_add(this.ptr, elem.ptr);
     }
 }
-module.exports.Ed25519KeyHashes = Ed25519KeyHashes;
 /**
 */
-class Ed25519Signature {
+export class Ed25519Signature {
 
     static __wrap(ptr) {
         const obj = Object.create(Ed25519Signature.prototype);
@@ -5969,10 +5924,9 @@ class Ed25519Signature {
         }
     }
 }
-module.exports.Ed25519Signature = Ed25519Signature;
 /**
 */
-class EnterpriseAddress {
+export class EnterpriseAddress {
 
     static __wrap(ptr) {
         const obj = Object.create(EnterpriseAddress.prototype);
@@ -6026,10 +5980,9 @@ class EnterpriseAddress {
         return ret === 0 ? undefined : EnterpriseAddress.__wrap(ret);
     }
 }
-module.exports.EnterpriseAddress = EnterpriseAddress;
 /**
 */
-class ExUnitPrices {
+export class ExUnitPrices {
 
     static __wrap(ptr) {
         const obj = Object.create(ExUnitPrices.prototype);
@@ -6121,10 +6074,9 @@ class ExUnitPrices {
         return ExUnitPrices.__wrap(ret);
     }
 }
-module.exports.ExUnitPrices = ExUnitPrices;
 /**
 */
-class ExUnits {
+export class ExUnits {
 
     static __wrap(ptr) {
         const obj = Object.create(ExUnits.prototype);
@@ -6207,10 +6159,9 @@ class ExUnits {
         return ExUnits.__wrap(ret);
     }
 }
-module.exports.ExUnits = ExUnits;
 /**
 */
-class GeneralTransactionMetadata {
+export class GeneralTransactionMetadata {
 
     static __wrap(ptr) {
         const obj = Object.create(GeneralTransactionMetadata.prototype);
@@ -6371,10 +6322,9 @@ class GeneralTransactionMetadata {
         return TransactionMetadatumLabels.__wrap(ret);
     }
 }
-module.exports.GeneralTransactionMetadata = GeneralTransactionMetadata;
 /**
 */
-class GenesisDelegateHash {
+export class GenesisDelegateHash {
 
     static __wrap(ptr) {
         const obj = Object.create(GenesisDelegateHash.prototype);
@@ -6515,10 +6465,9 @@ class GenesisDelegateHash {
         }
     }
 }
-module.exports.GenesisDelegateHash = GenesisDelegateHash;
 /**
 */
-class GenesisHash {
+export class GenesisHash {
 
     static __wrap(ptr) {
         const obj = Object.create(GenesisHash.prototype);
@@ -6659,10 +6608,9 @@ class GenesisHash {
         }
     }
 }
-module.exports.GenesisHash = GenesisHash;
 /**
 */
-class GenesisHashes {
+export class GenesisHashes {
 
     static __wrap(ptr) {
         const obj = Object.create(GenesisHashes.prototype);
@@ -6811,10 +6759,9 @@ class GenesisHashes {
         wasm.ed25519keyhashes_add(this.ptr, elem.ptr);
     }
 }
-module.exports.GenesisHashes = GenesisHashes;
 /**
 */
-class GenesisKeyDelegation {
+export class GenesisKeyDelegation {
 
     static __wrap(ptr) {
         const obj = Object.create(GenesisKeyDelegation.prototype);
@@ -6968,10 +6915,9 @@ class GenesisKeyDelegation {
         return GenesisKeyDelegation.__wrap(ret);
     }
 }
-module.exports.GenesisKeyDelegation = GenesisKeyDelegation;
 /**
 */
-class GovernanceAction {
+export class GovernanceAction {
 
     static __wrap(ptr) {
         const obj = Object.create(GovernanceAction.prototype);
@@ -7192,10 +7138,9 @@ class GovernanceAction {
         return ret === 0 ? undefined : NewConstitution.__wrap(ret);
     }
 }
-module.exports.GovernanceAction = GovernanceAction;
 /**
 */
-class GovernanceActionId {
+export class GovernanceActionId {
 
     static __wrap(ptr) {
         const obj = Object.create(GovernanceActionId.prototype);
@@ -7340,10 +7285,9 @@ class GovernanceActionId {
         return GovernanceActionId.__wrap(ret);
     }
 }
-module.exports.GovernanceActionId = GovernanceActionId;
 /**
 */
-class HardForkInitiationAction {
+export class HardForkInitiationAction {
 
     static __wrap(ptr) {
         const obj = Object.create(HardForkInitiationAction.prototype);
@@ -7479,10 +7423,9 @@ class HardForkInitiationAction {
         return HardForkInitiationAction.__wrap(ret);
     }
 }
-module.exports.HardForkInitiationAction = HardForkInitiationAction;
 /**
 */
-class Header {
+export class Header {
 
     static __wrap(ptr) {
         const obj = Object.create(Header.prototype);
@@ -7627,10 +7570,9 @@ class Header {
         return Header.__wrap(ret);
     }
 }
-module.exports.Header = Header;
 /**
 */
-class HeaderBody {
+export class HeaderBody {
 
     static __wrap(ptr) {
         const obj = Object.create(HeaderBody.prototype);
@@ -7858,10 +7800,9 @@ class HeaderBody {
         return HeaderBody.__wrap(ret);
     }
 }
-module.exports.HeaderBody = HeaderBody;
 /**
 */
-class Int {
+export class Int {
 
     static __wrap(ptr) {
         const obj = Object.create(Int.prototype);
@@ -8069,10 +8010,9 @@ class Int {
         }
     }
 }
-module.exports.Int = Int;
 /**
 */
-class Ipv4 {
+export class Ipv4 {
 
     static __wrap(ptr) {
         const obj = Object.create(Ipv4.prototype);
@@ -8229,10 +8169,9 @@ class Ipv4 {
         }
     }
 }
-module.exports.Ipv4 = Ipv4;
 /**
 */
-class Ipv6 {
+export class Ipv6 {
 
     static __wrap(ptr) {
         const obj = Object.create(Ipv6.prototype);
@@ -8389,10 +8328,9 @@ class Ipv6 {
         }
     }
 }
-module.exports.Ipv6 = Ipv6;
 /**
 */
-class KESSignature {
+export class KESSignature {
 
     static __wrap(ptr) {
         const obj = Object.create(KESSignature.prototype);
@@ -8450,10 +8388,9 @@ class KESSignature {
         }
     }
 }
-module.exports.KESSignature = KESSignature;
 /**
 */
-class KESVKey {
+export class KESVKey {
 
     static __wrap(ptr) {
         const obj = Object.create(KESVKey.prototype);
@@ -8594,10 +8531,9 @@ class KESVKey {
         }
     }
 }
-module.exports.KESVKey = KESVKey;
 /**
 */
-class Language {
+export class Language {
 
     static __wrap(ptr) {
         const obj = Object.create(Language.prototype);
@@ -8683,10 +8619,9 @@ class Language {
         return ret >>> 0;
     }
 }
-module.exports.Language = Language;
 /**
 */
-class Languages {
+export class Languages {
 
     static __wrap(ptr) {
         const obj = Object.create(Languages.prototype);
@@ -8737,10 +8672,9 @@ class Languages {
         wasm.languages_add(this.ptr, ptr0);
     }
 }
-module.exports.Languages = Languages;
 /**
 */
-class LegacyDaedalusPrivateKey {
+export class LegacyDaedalusPrivateKey {
 
     static __wrap(ptr) {
         const obj = Object.create(LegacyDaedalusPrivateKey.prototype);
@@ -8814,10 +8748,9 @@ class LegacyDaedalusPrivateKey {
         }
     }
 }
-module.exports.LegacyDaedalusPrivateKey = LegacyDaedalusPrivateKey;
 /**
 */
-class LinearFee {
+export class LinearFee {
 
     static __wrap(ptr) {
         const obj = Object.create(LinearFee.prototype);
@@ -8863,10 +8796,9 @@ class LinearFee {
         return LinearFee.__wrap(ret);
     }
 }
-module.exports.LinearFee = LinearFee;
 /**
 */
-class MIRToStakeCredentials {
+export class MIRToStakeCredentials {
 
     static __wrap(ptr) {
         const obj = Object.create(MIRToStakeCredentials.prototype);
@@ -9027,10 +8959,9 @@ class MIRToStakeCredentials {
         return StakeCredentials.__wrap(ret);
     }
 }
-module.exports.MIRToStakeCredentials = MIRToStakeCredentials;
 /**
 */
-class MetadataList {
+export class MetadataList {
 
     static __wrap(ptr) {
         const obj = Object.create(MetadataList.prototype);
@@ -9117,10 +9048,9 @@ class MetadataList {
         wasm.metadatalist_add(this.ptr, elem.ptr);
     }
 }
-module.exports.MetadataList = MetadataList;
 /**
 */
-class MetadataMap {
+export class MetadataMap {
 
     static __wrap(ptr) {
         const obj = Object.create(MetadataMap.prototype);
@@ -9312,10 +9242,9 @@ class MetadataMap {
         return MetadataList.__wrap(ret);
     }
 }
-module.exports.MetadataMap = MetadataMap;
 /**
 */
-class Mint {
+export class Mint {
 
     static __wrap(ptr) {
         const obj = Object.create(Mint.prototype);
@@ -9503,10 +9432,9 @@ class Mint {
         return MultiAsset.__wrap(ret);
     }
 }
-module.exports.Mint = Mint;
 /**
 */
-class MintAssets {
+export class MintAssets {
 
     static __wrap(ptr) {
         const obj = Object.create(MintAssets.prototype);
@@ -9581,10 +9509,9 @@ class MintAssets {
         return AssetNames.__wrap(ret);
     }
 }
-module.exports.MintAssets = MintAssets;
 /**
 */
-class MoveInstantaneousReward {
+export class MoveInstantaneousReward {
 
     static __wrap(ptr) {
         const obj = Object.create(MoveInstantaneousReward.prototype);
@@ -9752,10 +9679,9 @@ class MoveInstantaneousReward {
         return ret === 0 ? undefined : MIRToStakeCredentials.__wrap(ret);
     }
 }
-module.exports.MoveInstantaneousReward = MoveInstantaneousReward;
 /**
 */
-class MoveInstantaneousRewardsCert {
+export class MoveInstantaneousRewardsCert {
 
     static __wrap(ptr) {
         const obj = Object.create(MoveInstantaneousRewardsCert.prototype);
@@ -9891,10 +9817,9 @@ class MoveInstantaneousRewardsCert {
         return MoveInstantaneousRewardsCert.__wrap(ret);
     }
 }
-module.exports.MoveInstantaneousRewardsCert = MoveInstantaneousRewardsCert;
 /**
 */
-class MultiAsset {
+export class MultiAsset {
 
     static __wrap(ptr) {
         const obj = Object.create(MultiAsset.prototype);
@@ -10099,10 +10024,9 @@ class MultiAsset {
         return MultiAsset.__wrap(ret);
     }
 }
-module.exports.MultiAsset = MultiAsset;
 /**
 */
-class MultiHostName {
+export class MultiHostName {
 
     static __wrap(ptr) {
         const obj = Object.create(MultiHostName.prototype);
@@ -10238,10 +10162,9 @@ class MultiHostName {
         return MultiHostName.__wrap(ret);
     }
 }
-module.exports.MultiHostName = MultiHostName;
 /**
 */
-class NativeScript {
+export class NativeScript {
 
     static __wrap(ptr) {
         const obj = Object.create(NativeScript.prototype);
@@ -10503,10 +10426,9 @@ class NativeScript {
         return ret !== 0;
     }
 }
-module.exports.NativeScript = NativeScript;
 /**
 */
-class NativeScripts {
+export class NativeScripts {
 
     static __wrap(ptr) {
         const obj = Object.create(NativeScripts.prototype);
@@ -10556,10 +10478,9 @@ class NativeScripts {
         wasm.nativescripts_add(this.ptr, elem.ptr);
     }
 }
-module.exports.NativeScripts = NativeScripts;
 /**
 */
-class NetworkId {
+export class NetworkId {
 
     static __wrap(ptr) {
         const obj = Object.create(NetworkId.prototype);
@@ -10700,10 +10621,9 @@ class NetworkId {
         return ret >>> 0;
     }
 }
-module.exports.NetworkId = NetworkId;
 /**
 */
-class NetworkInfo {
+export class NetworkInfo {
 
     static __wrap(ptr) {
         const obj = Object.create(NetworkInfo.prototype);
@@ -10761,10 +10681,9 @@ class NetworkInfo {
         return NetworkInfo.__wrap(ret);
     }
 }
-module.exports.NetworkInfo = NetworkInfo;
 /**
 */
-class NewCommittee {
+export class NewCommittee {
 
     static __wrap(ptr) {
         const obj = Object.create(NewCommittee.prototype);
@@ -10909,10 +10828,9 @@ class NewCommittee {
         return NewCommittee.__wrap(ret);
     }
 }
-module.exports.NewCommittee = NewCommittee;
 /**
 */
-class NewConstitution {
+export class NewConstitution {
 
     static __wrap(ptr) {
         const obj = Object.create(NewConstitution.prototype);
@@ -11048,10 +10966,9 @@ class NewConstitution {
         return NewConstitution.__wrap(ret);
     }
 }
-module.exports.NewConstitution = NewConstitution;
 /**
 */
-class Nonce {
+export class Nonce {
 
     static __wrap(ptr) {
         const obj = Object.create(Nonce.prototype);
@@ -11156,10 +11073,9 @@ class Nonce {
         }
     }
 }
-module.exports.Nonce = Nonce;
 /**
 */
-class OperationalCert {
+export class OperationalCert {
 
     static __wrap(ptr) {
         const obj = Object.create(OperationalCert.prototype);
@@ -11320,10 +11236,9 @@ class OperationalCert {
         return OperationalCert.__wrap(ret);
     }
 }
-module.exports.OperationalCert = OperationalCert;
 /**
 */
-class ParameterChangeAction {
+export class ParameterChangeAction {
 
     static __wrap(ptr) {
         const obj = Object.create(ParameterChangeAction.prototype);
@@ -11459,10 +11374,9 @@ class ParameterChangeAction {
         return ParameterChangeAction.__wrap(ret);
     }
 }
-module.exports.ParameterChangeAction = ParameterChangeAction;
 /**
 */
-class PlutusData {
+export class PlutusData {
 
     static __wrap(ptr) {
         const obj = Object.create(PlutusData.prototype);
@@ -11620,10 +11534,9 @@ class PlutusData {
         }
     }
 }
-module.exports.PlutusData = PlutusData;
 /**
 */
-class PlutusList {
+export class PlutusList {
 
     static __wrap(ptr) {
         const obj = Object.create(PlutusList.prototype);
@@ -11710,10 +11623,9 @@ class PlutusList {
         wasm.plutuslist_add(this.ptr, elem.ptr);
     }
 }
-module.exports.PlutusList = PlutusList;
 /**
 */
-class PlutusMap {
+export class PlutusMap {
 
     static __wrap(ptr) {
         const obj = Object.create(PlutusMap.prototype);
@@ -11812,10 +11724,9 @@ class PlutusMap {
         return PlutusList.__wrap(ret);
     }
 }
-module.exports.PlutusMap = PlutusMap;
 /**
 */
-class PlutusScript {
+export class PlutusScript {
 
     static __wrap(ptr) {
         const obj = Object.create(PlutusScript.prototype);
@@ -11916,10 +11827,9 @@ class PlutusScript {
         }
     }
 }
-module.exports.PlutusScript = PlutusScript;
 /**
 */
-class PlutusScripts {
+export class PlutusScripts {
 
     static __wrap(ptr) {
         const obj = Object.create(PlutusScripts.prototype);
@@ -12006,10 +11916,9 @@ class PlutusScripts {
         wasm.assetnames_add(this.ptr, elem.ptr);
     }
 }
-module.exports.PlutusScripts = PlutusScripts;
 /**
 */
-class PlutusWitness {
+export class PlutusWitness {
 
     static __wrap(ptr) {
         const obj = Object.create(PlutusWitness.prototype);
@@ -12101,10 +12010,9 @@ class PlutusWitness {
         return ret >>> 0;
     }
 }
-module.exports.PlutusWitness = PlutusWitness;
 /**
 */
-class Pointer {
+export class Pointer {
 
     static __wrap(ptr) {
         const obj = Object.create(Pointer.prototype);
@@ -12159,10 +12067,9 @@ class Pointer {
         return BigNum.__wrap(ret);
     }
 }
-module.exports.Pointer = Pointer;
 /**
 */
-class PointerAddress {
+export class PointerAddress {
 
     static __wrap(ptr) {
         const obj = Object.create(PointerAddress.prototype);
@@ -12225,10 +12132,9 @@ class PointerAddress {
         return ret === 0 ? undefined : PointerAddress.__wrap(ret);
     }
 }
-module.exports.PointerAddress = PointerAddress;
 /**
 */
-class PoolMetadata {
+export class PoolMetadata {
 
     static __wrap(ptr) {
         const obj = Object.create(PoolMetadata.prototype);
@@ -12373,10 +12279,9 @@ class PoolMetadata {
         return PoolMetadata.__wrap(ret);
     }
 }
-module.exports.PoolMetadata = PoolMetadata;
 /**
 */
-class PoolMetadataHash {
+export class PoolMetadataHash {
 
     static __wrap(ptr) {
         const obj = Object.create(PoolMetadataHash.prototype);
@@ -12517,10 +12422,9 @@ class PoolMetadataHash {
         }
     }
 }
-module.exports.PoolMetadataHash = PoolMetadataHash;
 /**
 */
-class PoolParams {
+export class PoolParams {
 
     static __wrap(ptr) {
         const obj = Object.create(PoolParams.prototype);
@@ -12732,10 +12636,9 @@ class PoolParams {
         return PoolParams.__wrap(ret);
     }
 }
-module.exports.PoolParams = PoolParams;
 /**
 */
-class PoolRegistration {
+export class PoolRegistration {
 
     static __wrap(ptr) {
         const obj = Object.create(PoolRegistration.prototype);
@@ -12877,10 +12780,9 @@ class PoolRegistration {
         wasm.poolregistration_set_is_update(this.ptr, update);
     }
 }
-module.exports.PoolRegistration = PoolRegistration;
 /**
 */
-class PoolRetirement {
+export class PoolRetirement {
 
     static __wrap(ptr) {
         const obj = Object.create(PoolRetirement.prototype);
@@ -13024,10 +12926,9 @@ class PoolRetirement {
         return PoolRetirement.__wrap(ret);
     }
 }
-module.exports.PoolRetirement = PoolRetirement;
 /**
 */
-class PoolVotingThresholds {
+export class PoolVotingThresholds {
 
     static __wrap(ptr) {
         const obj = Object.create(PoolVotingThresholds.prototype);
@@ -13190,10 +13091,9 @@ class PoolVotingThresholds {
         return PoolVotingThresholds.__wrap(ret);
     }
 }
-module.exports.PoolVotingThresholds = PoolVotingThresholds;
 /**
 */
-class PrivateKey {
+export class PrivateKey {
 
     static __wrap(ptr) {
         const obj = Object.create(PrivateKey.prototype);
@@ -13406,10 +13306,9 @@ class PrivateKey {
         }
     }
 }
-module.exports.PrivateKey = PrivateKey;
 /**
 */
-class ProposalProcedure {
+export class ProposalProcedure {
 
     static __wrap(ptr) {
         const obj = Object.create(ProposalProcedure.prototype);
@@ -13572,10 +13471,9 @@ class ProposalProcedure {
         return ProposalProcedure.__wrap(ret);
     }
 }
-module.exports.ProposalProcedure = ProposalProcedure;
 /**
 */
-class ProposalProcedures {
+export class ProposalProcedures {
 
     static __wrap(ptr) {
         const obj = Object.create(ProposalProcedures.prototype);
@@ -13662,10 +13560,9 @@ class ProposalProcedures {
         wasm.proposalprocedures_add(this.ptr, elem.ptr);
     }
 }
-module.exports.ProposalProcedures = ProposalProcedures;
 /**
 */
-class ProposedProtocolParameterUpdates {
+export class ProposedProtocolParameterUpdates {
 
     static __wrap(ptr) {
         const obj = Object.create(ProposedProtocolParameterUpdates.prototype);
@@ -13826,10 +13723,9 @@ class ProposedProtocolParameterUpdates {
         return GenesisHashes.__wrap(ret);
     }
 }
-module.exports.ProposedProtocolParameterUpdates = ProposedProtocolParameterUpdates;
 /**
 */
-class ProtocolParamUpdate {
+export class ProtocolParamUpdate {
 
     static __wrap(ptr) {
         const obj = Object.create(ProtocolParamUpdate.prototype);
@@ -14465,10 +14361,9 @@ class ProtocolParamUpdate {
         return ProtocolParamUpdate.__wrap(ret);
     }
 }
-module.exports.ProtocolParamUpdate = ProtocolParamUpdate;
 /**
 */
-class ProtocolVersion {
+export class ProtocolVersion {
 
     static __wrap(ptr) {
         const obj = Object.create(ProtocolVersion.prototype);
@@ -14611,11 +14506,10 @@ class ProtocolVersion {
         return ProtocolVersion.__wrap(ret);
     }
 }
-module.exports.ProtocolVersion = ProtocolVersion;
 /**
 * ED25519 key used as public key
 */
-class PublicKey {
+export class PublicKey {
 
     static __wrap(ptr) {
         const obj = Object.create(PublicKey.prototype);
@@ -14733,10 +14627,9 @@ class PublicKey {
         return Ed25519KeyHash.__wrap(ret);
     }
 }
-module.exports.PublicKey = PublicKey;
 /**
 */
-class PublicKeys {
+export class PublicKeys {
 
     static __wrap(ptr) {
         const obj = Object.create(PublicKeys.prototype);
@@ -14785,10 +14678,9 @@ class PublicKeys {
         wasm.publickeys_add(this.ptr, key.ptr);
     }
 }
-module.exports.PublicKeys = PublicKeys;
 /**
 */
-class Redeemer {
+export class Redeemer {
 
     static __wrap(ptr) {
         const obj = Object.create(Redeemer.prototype);
@@ -14889,10 +14781,9 @@ class Redeemer {
         return Redeemer.__wrap(ret);
     }
 }
-module.exports.Redeemer = Redeemer;
 /**
 */
-class RedeemerTag {
+export class RedeemerTag {
 
     static __wrap(ptr) {
         const obj = Object.create(RedeemerTag.prototype);
@@ -14992,10 +14883,9 @@ class RedeemerTag {
         return ret >>> 0;
     }
 }
-module.exports.RedeemerTag = RedeemerTag;
 /**
 */
-class RedeemerWitnessKey {
+export class RedeemerWitnessKey {
 
     static __wrap(ptr) {
         const obj = Object.create(RedeemerWitnessKey.prototype);
@@ -15041,10 +14931,9 @@ class RedeemerWitnessKey {
         return RedeemerWitnessKey.__wrap(ret);
     }
 }
-module.exports.RedeemerWitnessKey = RedeemerWitnessKey;
 /**
 */
-class Redeemers {
+export class Redeemers {
 
     static __wrap(ptr) {
         const obj = Object.create(Redeemers.prototype);
@@ -15131,10 +15020,9 @@ class Redeemers {
         wasm.redeemers_add(this.ptr, elem.ptr);
     }
 }
-module.exports.Redeemers = Redeemers;
 /**
 */
-class RegCert {
+export class RegCert {
 
     static __wrap(ptr) {
         const obj = Object.create(RegCert.prototype);
@@ -15279,10 +15167,9 @@ class RegCert {
         return RegCert.__wrap(ret);
     }
 }
-module.exports.RegCert = RegCert;
 /**
 */
-class RegCommitteeHotKeyCert {
+export class RegCommitteeHotKeyCert {
 
     static __wrap(ptr) {
         const obj = Object.create(RegCommitteeHotKeyCert.prototype);
@@ -15427,10 +15314,9 @@ class RegCommitteeHotKeyCert {
         return RegCommitteeHotKeyCert.__wrap(ret);
     }
 }
-module.exports.RegCommitteeHotKeyCert = RegCommitteeHotKeyCert;
 /**
 */
-class RegDrepCert {
+export class RegDrepCert {
 
     static __wrap(ptr) {
         const obj = Object.create(RegDrepCert.prototype);
@@ -15575,10 +15461,9 @@ class RegDrepCert {
         return RegDrepCert.__wrap(ret);
     }
 }
-module.exports.RegDrepCert = RegDrepCert;
 /**
 */
-class Relay {
+export class Relay {
 
     static __wrap(ptr) {
         const obj = Object.create(Relay.prototype);
@@ -15753,10 +15638,9 @@ class Relay {
         return ret === 0 ? undefined : MultiHostName.__wrap(ret);
     }
 }
-module.exports.Relay = Relay;
 /**
 */
-class Relays {
+export class Relays {
 
     static __wrap(ptr) {
         const obj = Object.create(Relays.prototype);
@@ -15905,10 +15789,9 @@ class Relays {
         wasm.relays_add(this.ptr, elem.ptr);
     }
 }
-module.exports.Relays = Relays;
 /**
 */
-class RequiredWitnessSet {
+export class RequiredWitnessSet {
 
     static __wrap(ptr) {
         const obj = Object.create(RequiredWitnessSet.prototype);
@@ -16048,10 +15931,9 @@ class RequiredWitnessSet {
         return RequiredWitnessSet.__wrap(ret);
     }
 }
-module.exports.RequiredWitnessSet = RequiredWitnessSet;
 /**
 */
-class RewardAddress {
+export class RewardAddress {
 
     static __wrap(ptr) {
         const obj = Object.create(RewardAddress.prototype);
@@ -16105,10 +15987,9 @@ class RewardAddress {
         return ret === 0 ? undefined : RewardAddress.__wrap(ret);
     }
 }
-module.exports.RewardAddress = RewardAddress;
 /**
 */
-class RewardAddresses {
+export class RewardAddresses {
 
     static __wrap(ptr) {
         const obj = Object.create(RewardAddresses.prototype);
@@ -16257,10 +16138,9 @@ class RewardAddresses {
         wasm.rewardaddresses_add(this.ptr, elem.ptr);
     }
 }
-module.exports.RewardAddresses = RewardAddresses;
 /**
 */
-class Script {
+export class Script {
 
     static __wrap(ptr) {
         const obj = Object.create(Script.prototype);
@@ -16451,10 +16331,9 @@ class Script {
         return ret === 0 ? undefined : PlutusScript.__wrap(ret);
     }
 }
-module.exports.Script = Script;
 /**
 */
-class ScriptAll {
+export class ScriptAll {
 
     static __wrap(ptr) {
         const obj = Object.create(ScriptAll.prototype);
@@ -16590,10 +16469,9 @@ class ScriptAll {
         return ScriptAll.__wrap(ret);
     }
 }
-module.exports.ScriptAll = ScriptAll;
 /**
 */
-class ScriptAny {
+export class ScriptAny {
 
     static __wrap(ptr) {
         const obj = Object.create(ScriptAny.prototype);
@@ -16729,10 +16607,9 @@ class ScriptAny {
         return ScriptAny.__wrap(ret);
     }
 }
-module.exports.ScriptAny = ScriptAny;
 /**
 */
-class ScriptDataHash {
+export class ScriptDataHash {
 
     static __wrap(ptr) {
         const obj = Object.create(ScriptDataHash.prototype);
@@ -16873,10 +16750,9 @@ class ScriptDataHash {
         }
     }
 }
-module.exports.ScriptDataHash = ScriptDataHash;
 /**
 */
-class ScriptHash {
+export class ScriptHash {
 
     static __wrap(ptr) {
         const obj = Object.create(ScriptHash.prototype);
@@ -17017,10 +16893,9 @@ class ScriptHash {
         }
     }
 }
-module.exports.ScriptHash = ScriptHash;
 /**
 */
-class ScriptHashes {
+export class ScriptHashes {
 
     static __wrap(ptr) {
         const obj = Object.create(ScriptHashes.prototype);
@@ -17169,10 +17044,9 @@ class ScriptHashes {
         wasm.ed25519keyhashes_add(this.ptr, elem.ptr);
     }
 }
-module.exports.ScriptHashes = ScriptHashes;
 /**
 */
-class ScriptNOfK {
+export class ScriptNOfK {
 
     static __wrap(ptr) {
         const obj = Object.create(ScriptNOfK.prototype);
@@ -17316,10 +17190,9 @@ class ScriptNOfK {
         return ScriptNOfK.__wrap(ret);
     }
 }
-module.exports.ScriptNOfK = ScriptNOfK;
 /**
 */
-class ScriptPubkey {
+export class ScriptPubkey {
 
     static __wrap(ptr) {
         const obj = Object.create(ScriptPubkey.prototype);
@@ -17455,10 +17328,9 @@ class ScriptPubkey {
         return ScriptPubkey.__wrap(ret);
     }
 }
-module.exports.ScriptPubkey = ScriptPubkey;
 /**
 */
-class ScriptRef {
+export class ScriptRef {
 
     static __wrap(ptr) {
         const obj = Object.create(ScriptRef.prototype);
@@ -17594,10 +17466,9 @@ class ScriptRef {
         return Script.__wrap(ret);
     }
 }
-module.exports.ScriptRef = ScriptRef;
 /**
 */
-class ScriptWitness {
+export class ScriptWitness {
 
     static __wrap(ptr) {
         const obj = Object.create(ScriptWitness.prototype);
@@ -17719,10 +17590,9 @@ class ScriptWitness {
         return ret === 0 ? undefined : PlutusWitness.__wrap(ret);
     }
 }
-module.exports.ScriptWitness = ScriptWitness;
 /**
 */
-class SingleHostAddr {
+export class SingleHostAddr {
 
     static __wrap(ptr) {
         const obj = Object.create(SingleHostAddr.prototype);
@@ -17883,10 +17753,9 @@ class SingleHostAddr {
         return SingleHostAddr.__wrap(ret);
     }
 }
-module.exports.SingleHostAddr = SingleHostAddr;
 /**
 */
-class SingleHostName {
+export class SingleHostName {
 
     static __wrap(ptr) {
         const obj = Object.create(SingleHostName.prototype);
@@ -18030,10 +17899,9 @@ class SingleHostName {
         return SingleHostName.__wrap(ret);
     }
 }
-module.exports.SingleHostName = SingleHostName;
 /**
 */
-class StakeCredential {
+export class StakeCredential {
 
     static __wrap(ptr) {
         const obj = Object.create(StakeCredential.prototype);
@@ -18192,10 +18060,9 @@ class StakeCredential {
         }
     }
 }
-module.exports.StakeCredential = StakeCredential;
 /**
 */
-class StakeCredentials {
+export class StakeCredentials {
 
     static __wrap(ptr) {
         const obj = Object.create(StakeCredentials.prototype);
@@ -18344,10 +18211,9 @@ class StakeCredentials {
         wasm.stakecredentials_add(this.ptr, elem.ptr);
     }
 }
-module.exports.StakeCredentials = StakeCredentials;
 /**
 */
-class StakeDelegation {
+export class StakeDelegation {
 
     static __wrap(ptr) {
         const obj = Object.create(StakeDelegation.prototype);
@@ -18492,10 +18358,9 @@ class StakeDelegation {
         return StakeDelegation.__wrap(ret);
     }
 }
-module.exports.StakeDelegation = StakeDelegation;
 /**
 */
-class StakeDeregistration {
+export class StakeDeregistration {
 
     static __wrap(ptr) {
         const obj = Object.create(StakeDeregistration.prototype);
@@ -18631,10 +18496,9 @@ class StakeDeregistration {
         return StakeDeregistration.__wrap(ret);
     }
 }
-module.exports.StakeDeregistration = StakeDeregistration;
 /**
 */
-class StakeRegDelegCert {
+export class StakeRegDelegCert {
 
     static __wrap(ptr) {
         const obj = Object.create(StakeRegDelegCert.prototype);
@@ -18788,10 +18652,9 @@ class StakeRegDelegCert {
         return StakeRegDelegCert.__wrap(ret);
     }
 }
-module.exports.StakeRegDelegCert = StakeRegDelegCert;
 /**
 */
-class StakeRegistration {
+export class StakeRegistration {
 
     static __wrap(ptr) {
         const obj = Object.create(StakeRegistration.prototype);
@@ -18927,10 +18790,9 @@ class StakeRegistration {
         return StakeRegistration.__wrap(ret);
     }
 }
-module.exports.StakeRegistration = StakeRegistration;
 /**
 */
-class StakeVoteDelegCert {
+export class StakeVoteDelegCert {
 
     static __wrap(ptr) {
         const obj = Object.create(StakeVoteDelegCert.prototype);
@@ -19084,10 +18946,9 @@ class StakeVoteDelegCert {
         return StakeVoteDelegCert.__wrap(ret);
     }
 }
-module.exports.StakeVoteDelegCert = StakeVoteDelegCert;
 /**
 */
-class StakeVoteRegDelegCert {
+export class StakeVoteRegDelegCert {
 
     static __wrap(ptr) {
         const obj = Object.create(StakeVoteRegDelegCert.prototype);
@@ -19250,10 +19111,9 @@ class StakeVoteRegDelegCert {
         return StakeVoteRegDelegCert.__wrap(ret);
     }
 }
-module.exports.StakeVoteRegDelegCert = StakeVoteRegDelegCert;
 /**
 */
-class Strings {
+export class Strings {
 
     static __wrap(ptr) {
         const obj = Object.create(Strings.prototype);
@@ -19312,10 +19172,9 @@ class Strings {
         wasm.strings_add(this.ptr, ptr0, len0);
     }
 }
-module.exports.Strings = Strings;
 /**
 */
-class TimelockExpiry {
+export class TimelockExpiry {
 
     static __wrap(ptr) {
         const obj = Object.create(TimelockExpiry.prototype);
@@ -19451,10 +19310,9 @@ class TimelockExpiry {
         return TimelockExpiry.__wrap(ret);
     }
 }
-module.exports.TimelockExpiry = TimelockExpiry;
 /**
 */
-class TimelockStart {
+export class TimelockStart {
 
     static __wrap(ptr) {
         const obj = Object.create(TimelockStart.prototype);
@@ -19590,10 +19448,9 @@ class TimelockStart {
         return TimelockStart.__wrap(ret);
     }
 }
-module.exports.TimelockStart = TimelockStart;
 /**
 */
-class Transaction {
+export class Transaction {
 
     static __wrap(ptr) {
         const obj = Object.create(Transaction.prototype);
@@ -19764,10 +19621,9 @@ class Transaction {
         return Transaction.__wrap(ret);
     }
 }
-module.exports.Transaction = Transaction;
 /**
 */
-class TransactionBodies {
+export class TransactionBodies {
 
     static __wrap(ptr) {
         const obj = Object.create(TransactionBodies.prototype);
@@ -19916,10 +19772,9 @@ class TransactionBodies {
         wasm.transactionbodies_add(this.ptr, elem.ptr);
     }
 }
-module.exports.TransactionBodies = TransactionBodies;
 /**
 */
-class TransactionBody {
+export class TransactionBody {
 
     static __wrap(ptr) {
         const obj = Object.create(TransactionBody.prototype);
@@ -20315,10 +20170,9 @@ class TransactionBody {
         }
     }
 }
-module.exports.TransactionBody = TransactionBody;
 /**
 */
-class TransactionBuilder {
+export class TransactionBuilder {
 
     static __wrap(ptr) {
         const obj = Object.create(TransactionBuilder.prototype);
@@ -21018,10 +20872,9 @@ class TransactionBuilder {
         }
     }
 }
-module.exports.TransactionBuilder = TransactionBuilder;
 /**
 */
-class TransactionBuilderConfig {
+export class TransactionBuilderConfig {
 
     static __wrap(ptr) {
         const obj = Object.create(TransactionBuilderConfig.prototype);
@@ -21042,10 +20895,9 @@ class TransactionBuilderConfig {
         wasm.__wbg_transactionbuilderconfig_free(ptr);
     }
 }
-module.exports.TransactionBuilderConfig = TransactionBuilderConfig;
 /**
 */
-class TransactionBuilderConfigBuilder {
+export class TransactionBuilderConfigBuilder {
 
     static __wrap(ptr) {
         const obj = Object.create(TransactionBuilderConfigBuilder.prototype);
@@ -21231,10 +21083,9 @@ class TransactionBuilderConfigBuilder {
         }
     }
 }
-module.exports.TransactionBuilderConfigBuilder = TransactionBuilderConfigBuilder;
 /**
 */
-class TransactionHash {
+export class TransactionHash {
 
     static __wrap(ptr) {
         const obj = Object.create(TransactionHash.prototype);
@@ -21375,10 +21226,9 @@ class TransactionHash {
         }
     }
 }
-module.exports.TransactionHash = TransactionHash;
 /**
 */
-class TransactionIndexes {
+export class TransactionIndexes {
 
     static __wrap(ptr) {
         const obj = Object.create(TransactionIndexes.prototype);
@@ -21465,10 +21315,9 @@ class TransactionIndexes {
         wasm.transactionindexes_add(this.ptr, elem.ptr);
     }
 }
-module.exports.TransactionIndexes = TransactionIndexes;
 /**
 */
-class TransactionInput {
+export class TransactionInput {
 
     static __wrap(ptr) {
         const obj = Object.create(TransactionInput.prototype);
@@ -21613,10 +21462,9 @@ class TransactionInput {
         return TransactionInput.__wrap(ret);
     }
 }
-module.exports.TransactionInput = TransactionInput;
 /**
 */
-class TransactionInputs {
+export class TransactionInputs {
 
     static __wrap(ptr) {
         const obj = Object.create(TransactionInputs.prototype);
@@ -21770,10 +21618,9 @@ class TransactionInputs {
         wasm.transactioninputs_sort(this.ptr);
     }
 }
-module.exports.TransactionInputs = TransactionInputs;
 /**
 */
-class TransactionMetadatum {
+export class TransactionMetadatum {
 
     static __wrap(ptr) {
         const obj = Object.create(TransactionMetadatum.prototype);
@@ -22005,10 +21852,9 @@ class TransactionMetadatum {
         }
     }
 }
-module.exports.TransactionMetadatum = TransactionMetadatum;
 /**
 */
-class TransactionMetadatumLabels {
+export class TransactionMetadatumLabels {
 
     static __wrap(ptr) {
         const obj = Object.create(TransactionMetadatumLabels.prototype);
@@ -22095,10 +21941,9 @@ class TransactionMetadatumLabels {
         wasm.transactionindexes_add(this.ptr, elem.ptr);
     }
 }
-module.exports.TransactionMetadatumLabels = TransactionMetadatumLabels;
 /**
 */
-class TransactionOutput {
+export class TransactionOutput {
 
     static __wrap(ptr) {
         const obj = Object.create(TransactionOutput.prototype);
@@ -22297,10 +22142,9 @@ class TransactionOutput {
         }
     }
 }
-module.exports.TransactionOutput = TransactionOutput;
 /**
 */
-class TransactionOutputAmountBuilder {
+export class TransactionOutputAmountBuilder {
 
     static __wrap(ptr) {
         const obj = Object.create(TransactionOutputAmountBuilder.prototype);
@@ -22390,7 +22234,6 @@ class TransactionOutputAmountBuilder {
         }
     }
 }
-module.exports.TransactionOutputAmountBuilder = TransactionOutputAmountBuilder;
 /**
 * We introduce a builder-pattern format for creating transaction outputs
 * This is because:
@@ -22398,7 +22241,7 @@ module.exports.TransactionOutputAmountBuilder = TransactionOutputAmountBuilder;
 * 2. Some fields like amounts have many ways it could be set (some depending on other field values being known)
 * 3. Easier to adapt as the output format gets more complicated in future Cardano releases
 */
-class TransactionOutputBuilder {
+export class TransactionOutputBuilder {
 
     static __wrap(ptr) {
         const obj = Object.create(TransactionOutputBuilder.prototype);
@@ -22462,10 +22305,9 @@ class TransactionOutputBuilder {
         }
     }
 }
-module.exports.TransactionOutputBuilder = TransactionOutputBuilder;
 /**
 */
-class TransactionOutputs {
+export class TransactionOutputs {
 
     static __wrap(ptr) {
         const obj = Object.create(TransactionOutputs.prototype);
@@ -22614,10 +22456,9 @@ class TransactionOutputs {
         wasm.transactionoutputs_add(this.ptr, elem.ptr);
     }
 }
-module.exports.TransactionOutputs = TransactionOutputs;
 /**
 */
-class TransactionUnspentOutput {
+export class TransactionUnspentOutput {
 
     static __wrap(ptr) {
         const obj = Object.create(TransactionUnspentOutput.prototype);
@@ -22716,10 +22557,9 @@ class TransactionUnspentOutput {
         }
     }
 }
-module.exports.TransactionUnspentOutput = TransactionUnspentOutput;
 /**
 */
-class TransactionUnspentOutputs {
+export class TransactionUnspentOutputs {
 
     static __wrap(ptr) {
         const obj = Object.create(TransactionUnspentOutputs.prototype);
@@ -22769,10 +22609,9 @@ class TransactionUnspentOutputs {
         wasm.transactionunspentoutputs_add(this.ptr, elem.ptr);
     }
 }
-module.exports.TransactionUnspentOutputs = TransactionUnspentOutputs;
 /**
 */
-class TransactionWitnessSet {
+export class TransactionWitnessSet {
 
     static __wrap(ptr) {
         const obj = Object.create(TransactionWitnessSet.prototype);
@@ -23011,11 +22850,10 @@ class TransactionWitnessSet {
         return TransactionWitnessSet.__wrap(ret);
     }
 }
-module.exports.TransactionWitnessSet = TransactionWitnessSet;
 /**
 * Builder de-duplicates witnesses as they are added
 */
-class TransactionWitnessSetBuilder {
+export class TransactionWitnessSetBuilder {
 
     static __wrap(ptr) {
         const obj = Object.create(TransactionWitnessSetBuilder.prototype);
@@ -23124,10 +22962,9 @@ class TransactionWitnessSetBuilder {
         }
     }
 }
-module.exports.TransactionWitnessSetBuilder = TransactionWitnessSetBuilder;
 /**
 */
-class TransactionWitnessSets {
+export class TransactionWitnessSets {
 
     static __wrap(ptr) {
         const obj = Object.create(TransactionWitnessSets.prototype);
@@ -23276,10 +23113,9 @@ class TransactionWitnessSets {
         wasm.transactionwitnesssets_add(this.ptr, elem.ptr);
     }
 }
-module.exports.TransactionWitnessSets = TransactionWitnessSets;
 /**
 */
-class TreasuryWithdrawals {
+export class TreasuryWithdrawals {
 
     static __wrap(ptr) {
         const obj = Object.create(TreasuryWithdrawals.prototype);
@@ -23440,10 +23276,9 @@ class TreasuryWithdrawals {
         return Ed25519KeyHashes.__wrap(ret);
     }
 }
-module.exports.TreasuryWithdrawals = TreasuryWithdrawals;
 /**
 */
-class TreasuryWithdrawalsAction {
+export class TreasuryWithdrawalsAction {
 
     static __wrap(ptr) {
         const obj = Object.create(TreasuryWithdrawalsAction.prototype);
@@ -23579,10 +23414,9 @@ class TreasuryWithdrawalsAction {
         return TreasuryWithdrawalsAction.__wrap(ret);
     }
 }
-module.exports.TreasuryWithdrawalsAction = TreasuryWithdrawalsAction;
 /**
 */
-class UnitInterval {
+export class UnitInterval {
 
     static __wrap(ptr) {
         const obj = Object.create(UnitInterval.prototype);
@@ -23735,10 +23569,9 @@ class UnitInterval {
         return UnitInterval.__wrap(ret);
     }
 }
-module.exports.UnitInterval = UnitInterval;
 /**
 */
-class UnregCert {
+export class UnregCert {
 
     static __wrap(ptr) {
         const obj = Object.create(UnregCert.prototype);
@@ -23883,10 +23716,9 @@ class UnregCert {
         return UnregCert.__wrap(ret);
     }
 }
-module.exports.UnregCert = UnregCert;
 /**
 */
-class UnregCommitteeHotKeyCert {
+export class UnregCommitteeHotKeyCert {
 
     static __wrap(ptr) {
         const obj = Object.create(UnregCommitteeHotKeyCert.prototype);
@@ -24022,10 +23854,9 @@ class UnregCommitteeHotKeyCert {
         return UnregCommitteeHotKeyCert.__wrap(ret);
     }
 }
-module.exports.UnregCommitteeHotKeyCert = UnregCommitteeHotKeyCert;
 /**
 */
-class UnregDrepCert {
+export class UnregDrepCert {
 
     static __wrap(ptr) {
         const obj = Object.create(UnregDrepCert.prototype);
@@ -24170,10 +24001,9 @@ class UnregDrepCert {
         return UnregDrepCert.__wrap(ret);
     }
 }
-module.exports.UnregDrepCert = UnregDrepCert;
 /**
 */
-class Update {
+export class Update {
 
     static __wrap(ptr) {
         const obj = Object.create(Update.prototype);
@@ -24317,10 +24147,9 @@ class Update {
         return Update.__wrap(ret);
     }
 }
-module.exports.Update = Update;
 /**
 */
-class Url {
+export class Url {
 
     static __wrap(ptr) {
         const obj = Object.create(Url.prototype);
@@ -24414,10 +24243,9 @@ class Url {
         }
     }
 }
-module.exports.Url = Url;
 /**
 */
-class VRFCert {
+export class VRFCert {
 
     static __wrap(ptr) {
         const obj = Object.create(VRFCert.prototype);
@@ -24593,10 +24421,9 @@ class VRFCert {
         }
     }
 }
-module.exports.VRFCert = VRFCert;
 /**
 */
-class VRFKeyHash {
+export class VRFKeyHash {
 
     static __wrap(ptr) {
         const obj = Object.create(VRFKeyHash.prototype);
@@ -24737,10 +24564,9 @@ class VRFKeyHash {
         }
     }
 }
-module.exports.VRFKeyHash = VRFKeyHash;
 /**
 */
-class VRFVKey {
+export class VRFVKey {
 
     static __wrap(ptr) {
         const obj = Object.create(VRFVKey.prototype);
@@ -24821,10 +24647,9 @@ class VRFVKey {
         }
     }
 }
-module.exports.VRFVKey = VRFVKey;
 /**
 */
-class Value {
+export class Value {
 
     static __wrap(ptr) {
         const obj = Object.create(Value.prototype);
@@ -25063,10 +24888,9 @@ class Value {
         return ret === 0xFFFFFF ? undefined : ret;
     }
 }
-module.exports.Value = Value;
 /**
 */
-class Vkey {
+export class Vkey {
 
     static __wrap(ptr) {
         const obj = Object.create(Vkey.prototype);
@@ -25140,10 +24964,9 @@ class Vkey {
         return PublicKey.__wrap(ret);
     }
 }
-module.exports.Vkey = Vkey;
 /**
 */
-class Vkeys {
+export class Vkeys {
 
     static __wrap(ptr) {
         const obj = Object.create(Vkeys.prototype);
@@ -25193,10 +25016,9 @@ class Vkeys {
         wasm.vkeys_add(this.ptr, elem.ptr);
     }
 }
-module.exports.Vkeys = Vkeys;
 /**
 */
-class Vkeywitness {
+export class Vkeywitness {
 
     static __wrap(ptr) {
         const obj = Object.create(Vkeywitness.prototype);
@@ -25341,10 +25163,9 @@ class Vkeywitness {
         return Ed25519Signature.__wrap(ret);
     }
 }
-module.exports.Vkeywitness = Vkeywitness;
 /**
 */
-class Vkeywitnesses {
+export class Vkeywitnesses {
 
     static __wrap(ptr) {
         const obj = Object.create(Vkeywitnesses.prototype);
@@ -25394,10 +25215,9 @@ class Vkeywitnesses {
         wasm.vkeywitnesses_add(this.ptr, elem.ptr);
     }
 }
-module.exports.Vkeywitnesses = Vkeywitnesses;
 /**
 */
-class Vote {
+export class Vote {
 
     static __wrap(ptr) {
         const obj = Object.create(Vote.prototype);
@@ -25545,10 +25365,9 @@ class Vote {
         return ret >>> 0;
     }
 }
-module.exports.Vote = Vote;
 /**
 */
-class VoteDelegCert {
+export class VoteDelegCert {
 
     static __wrap(ptr) {
         const obj = Object.create(VoteDelegCert.prototype);
@@ -25693,10 +25512,9 @@ class VoteDelegCert {
         return VoteDelegCert.__wrap(ret);
     }
 }
-module.exports.VoteDelegCert = VoteDelegCert;
 /**
 */
-class VoteRegDelegCert {
+export class VoteRegDelegCert {
 
     static __wrap(ptr) {
         const obj = Object.create(VoteRegDelegCert.prototype);
@@ -25850,10 +25668,9 @@ class VoteRegDelegCert {
         return VoteRegDelegCert.__wrap(ret);
     }
 }
-module.exports.VoteRegDelegCert = VoteRegDelegCert;
 /**
 */
-class Voter {
+export class Voter {
 
     static __wrap(ptr) {
         const obj = Object.create(Voter.prototype);
@@ -26060,10 +25877,9 @@ class Voter {
         return ret === 0 ? undefined : Ed25519KeyHash.__wrap(ret);
     }
 }
-module.exports.Voter = Voter;
 /**
 */
-class VotingProcedure {
+export class VotingProcedure {
 
     static __wrap(ptr) {
         const obj = Object.create(VotingProcedure.prototype);
@@ -26226,10 +26042,9 @@ class VotingProcedure {
         return VotingProcedure.__wrap(ret);
     }
 }
-module.exports.VotingProcedure = VotingProcedure;
 /**
 */
-class VotingProcedures {
+export class VotingProcedures {
 
     static __wrap(ptr) {
         const obj = Object.create(VotingProcedures.prototype);
@@ -26316,10 +26131,9 @@ class VotingProcedures {
         wasm.votingprocedures_add(this.ptr, elem.ptr);
     }
 }
-module.exports.VotingProcedures = VotingProcedures;
 /**
 */
-class Withdrawals {
+export class Withdrawals {
 
     static __wrap(ptr) {
         const obj = Object.create(Withdrawals.prototype);
@@ -26480,332 +26294,288 @@ class Withdrawals {
         return RewardAddresses.__wrap(ret);
     }
 }
-module.exports.Withdrawals = Withdrawals;
 
-module.exports.__wbindgen_object_drop_ref = function(arg0) {
-    takeObject(arg0);
-};
-
-module.exports.__wbindgen_json_parse = function(arg0, arg1) {
-    const ret = JSON.parse(getStringFromWasm0(arg0, arg1));
-    return addHeapObject(ret);
-};
-
-module.exports.__wbindgen_json_serialize = function(arg0, arg1) {
-    const obj = getObject(arg1);
-    const ret = JSON.stringify(obj === undefined ? null : obj);
-    const ptr0 = passStringToWasm0(ret, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-    const len0 = WASM_VECTOR_LEN;
-    getInt32Memory0()[arg0 / 4 + 1] = len0;
-    getInt32Memory0()[arg0 / 4 + 0] = ptr0;
-};
-
-module.exports.__wbindgen_string_new = function(arg0, arg1) {
-    const ret = getStringFromWasm0(arg0, arg1);
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_fetch_16f5dddfc5a913a4 = function(arg0, arg1) {
-    const ret = getObject(arg0).fetch(getObject(arg1));
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_transaction_new = function(arg0) {
-    const ret = Transaction.__wrap(arg0);
-    return addHeapObject(ret);
-};
-
-module.exports.__wbindgen_string_get = function(arg0, arg1) {
-    const obj = getObject(arg1);
-    const ret = typeof(obj) === 'string' ? obj : undefined;
-    var ptr0 = isLikeNone(ret) ? 0 : passStringToWasm0(ret, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-    var len0 = WASM_VECTOR_LEN;
-    getInt32Memory0()[arg0 / 4 + 1] = len0;
-    getInt32Memory0()[arg0 / 4 + 0] = ptr0;
-};
-
-module.exports.__wbindgen_object_clone_ref = function(arg0) {
-    const ret = getObject(arg0);
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_set_a5d34c36a1a4ebd1 = function() { return handleError(function (arg0, arg1, arg2, arg3, arg4) {
-    getObject(arg0).set(getStringFromWasm0(arg1, arg2), getStringFromWasm0(arg3, arg4));
-}, arguments) };
-
-module.exports.__wbg_headers_ab5251d2727ac41e = function(arg0) {
-    const ret = getObject(arg0).headers;
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_newwithstrandinit_c45f0dc6da26fd03 = function() { return handleError(function (arg0, arg1, arg2) {
-    const ret = new Request(getStringFromWasm0(arg0, arg1), getObject(arg2));
-    return addHeapObject(ret);
-}, arguments) };
-
-module.exports.__wbg_instanceof_Response_fb3a4df648c1859b = function(arg0) {
-    let result;
-    try {
-        result = getObject(arg0) instanceof Response;
-    } catch {
-        result = false;
-    }
-    const ret = result;
-    return ret;
-};
-
-module.exports.__wbg_json_b9414eb18cb751d0 = function() { return handleError(function (arg0) {
-    const ret = getObject(arg0).json();
-    return addHeapObject(ret);
-}, arguments) };
-
-module.exports.__wbindgen_cb_drop = function(arg0) {
-    const obj = takeObject(arg0).original;
-    if (obj.cnt-- == 1) {
-        obj.a = 0;
-        return true;
-    }
-    const ret = false;
-    return ret;
-};
-
-module.exports.__wbg_process_5615a087a47ba544 = function(arg0) {
-    const ret = getObject(arg0).process;
-    return addHeapObject(ret);
-};
-
-module.exports.__wbindgen_is_object = function(arg0) {
-    const val = getObject(arg0);
-    const ret = typeof(val) === 'object' && val !== null;
-    return ret;
-};
-
-module.exports.__wbg_versions_8404a8b21b9337ae = function(arg0) {
-    const ret = getObject(arg0).versions;
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_node_8b504e170b6380b9 = function(arg0) {
-    const ret = getObject(arg0).node;
-    return addHeapObject(ret);
-};
-
-module.exports.__wbindgen_is_string = function(arg0) {
-    const ret = typeof(getObject(arg0)) === 'string';
-    return ret;
-};
-
-module.exports.__wbg_require_0430b68b38d1a77e = function() { return handleError(function (arg0, arg1, arg2) {
-    const ret = getObject(arg0).require(getStringFromWasm0(arg1, arg2));
-    return addHeapObject(ret);
-}, arguments) };
-
-module.exports.__wbg_crypto_ca5197b41df5e2bd = function(arg0) {
-    const ret = getObject(arg0).crypto;
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_msCrypto_1088c21440b2d7e4 = function(arg0) {
-    const ret = getObject(arg0).msCrypto;
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_static_accessor_NODE_MODULE_06b864c18e8ae506 = function() {
-    const ret = module;
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_randomFillSync_2f6909f8132a175d = function() { return handleError(function (arg0, arg1, arg2) {
-    getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
-}, arguments) };
-
-module.exports.__wbg_getRandomValues_11a236fbf9914290 = function() { return handleError(function (arg0, arg1) {
-    getObject(arg0).getRandomValues(getObject(arg1));
-}, arguments) };
-
-module.exports.__wbg_self_e7c1f827057f6584 = function() { return handleError(function () {
-    const ret = self.self;
-    return addHeapObject(ret);
-}, arguments) };
-
-module.exports.__wbg_window_a09ec664e14b1b81 = function() { return handleError(function () {
-    const ret = window.window;
-    return addHeapObject(ret);
-}, arguments) };
-
-module.exports.__wbg_globalThis_87cbb8506fecf3a9 = function() { return handleError(function () {
-    const ret = globalThis.globalThis;
-    return addHeapObject(ret);
-}, arguments) };
-
-module.exports.__wbg_global_c85a9259e621f3db = function() { return handleError(function () {
-    const ret = global.global;
-    return addHeapObject(ret);
-}, arguments) };
-
-module.exports.__wbindgen_is_undefined = function(arg0) {
-    const ret = getObject(arg0) === undefined;
-    return ret;
-};
-
-module.exports.__wbg_newnoargs_2b8b6bd7753c76ba = function(arg0, arg1) {
-    const ret = new Function(getStringFromWasm0(arg0, arg1));
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_call_95d1ea488d03e4e8 = function() { return handleError(function (arg0, arg1) {
-    const ret = getObject(arg0).call(getObject(arg1));
-    return addHeapObject(ret);
-}, arguments) };
-
-module.exports.__wbg_new_f9876326328f45ed = function() {
-    const ret = new Object();
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_call_9495de66fdbe016b = function() { return handleError(function (arg0, arg1, arg2) {
-    const ret = getObject(arg0).call(getObject(arg1), getObject(arg2));
-    return addHeapObject(ret);
-}, arguments) };
-
-module.exports.__wbg_set_6aa458a4ebdb65cb = function() { return handleError(function (arg0, arg1, arg2) {
-    const ret = Reflect.set(getObject(arg0), getObject(arg1), getObject(arg2));
-    return ret;
-}, arguments) };
-
-module.exports.__wbg_buffer_cf65c07de34b9a08 = function(arg0) {
-    const ret = getObject(arg0).buffer;
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_new_9d3a9ce4282a18a8 = function(arg0, arg1) {
-    try {
-        var state0 = {a: arg0, b: arg1};
-        var cb0 = (arg0, arg1) => {
-            const a = state0.a;
-            state0.a = 0;
+const imports = {
+    __wbindgen_placeholder__: {
+        __wbindgen_object_drop_ref: function(arg0) {
+            takeObject(arg0);
+        },
+        __wbindgen_json_parse: function(arg0, arg1) {
+            const ret = JSON.parse(getStringFromWasm0(arg0, arg1));
+            return addHeapObject(ret);
+        },
+        __wbindgen_json_serialize: function(arg0, arg1) {
+            const obj = getObject(arg1);
+            const ret = JSON.stringify(obj === undefined ? null : obj);
+            const ptr0 = passStringToWasm0(ret, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            const len0 = WASM_VECTOR_LEN;
+            getInt32Memory0()[arg0 / 4 + 1] = len0;
+            getInt32Memory0()[arg0 / 4 + 0] = ptr0;
+        },
+        __wbindgen_string_new: function(arg0, arg1) {
+            const ret = getStringFromWasm0(arg0, arg1);
+            return addHeapObject(ret);
+        },
+        __wbg_fetch_16f5dddfc5a913a4: function(arg0, arg1) {
+            const ret = getObject(arg0).fetch(getObject(arg1));
+            return addHeapObject(ret);
+        },
+        __wbg_transaction_new: function(arg0) {
+            const ret = Transaction.__wrap(arg0);
+            return addHeapObject(ret);
+        },
+        __wbindgen_string_get: function(arg0, arg1) {
+            const obj = getObject(arg1);
+            const ret = typeof(obj) === 'string' ? obj : undefined;
+            var ptr0 = isLikeNone(ret) ? 0 : passStringToWasm0(ret, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            var len0 = WASM_VECTOR_LEN;
+            getInt32Memory0()[arg0 / 4 + 1] = len0;
+            getInt32Memory0()[arg0 / 4 + 0] = ptr0;
+        },
+        __wbindgen_object_clone_ref: function(arg0) {
+            const ret = getObject(arg0);
+            return addHeapObject(ret);
+        },
+        __wbg_set_a5d34c36a1a4ebd1: function() { return handleError(function (arg0, arg1, arg2, arg3, arg4) {
+            getObject(arg0).set(getStringFromWasm0(arg1, arg2), getStringFromWasm0(arg3, arg4));
+        }, arguments) },
+        __wbg_headers_ab5251d2727ac41e: function(arg0) {
+            const ret = getObject(arg0).headers;
+            return addHeapObject(ret);
+        },
+        __wbg_newwithstrandinit_c45f0dc6da26fd03: function() { return handleError(function (arg0, arg1, arg2) {
+            const ret = new Request(getStringFromWasm0(arg0, arg1), getObject(arg2));
+            return addHeapObject(ret);
+        }, arguments) },
+        __wbg_instanceof_Response_fb3a4df648c1859b: function(arg0) {
+            let result;
             try {
-                return __wbg_adapter_1683(a, state0.b, arg0, arg1);
-            } finally {
-                state0.a = a;
+                result = getObject(arg0) instanceof Response;
+            } catch {
+                result = false;
             }
-        };
-        const ret = new Promise(cb0);
-        return addHeapObject(ret);
-    } finally {
-        state0.a = state0.b = 0;
-    }
+            const ret = result;
+            return ret;
+        },
+        __wbg_json_b9414eb18cb751d0: function() { return handleError(function (arg0) {
+            const ret = getObject(arg0).json();
+            return addHeapObject(ret);
+        }, arguments) },
+        __wbindgen_cb_drop: function(arg0) {
+            const obj = takeObject(arg0).original;
+            if (obj.cnt-- == 1) {
+                obj.a = 0;
+                return true;
+            }
+            const ret = false;
+            return ret;
+        },
+        __wbg_process_5615a087a47ba544: function(arg0) {
+            const ret = getObject(arg0).process;
+            return addHeapObject(ret);
+        },
+        __wbindgen_is_object: function(arg0) {
+            const val = getObject(arg0);
+            const ret = typeof(val) === 'object' && val !== null;
+            return ret;
+        },
+        __wbg_versions_8404a8b21b9337ae: function(arg0) {
+            const ret = getObject(arg0).versions;
+            return addHeapObject(ret);
+        },
+        __wbg_node_8b504e170b6380b9: function(arg0) {
+            const ret = getObject(arg0).node;
+            return addHeapObject(ret);
+        },
+        __wbindgen_is_string: function(arg0) {
+            const ret = typeof(getObject(arg0)) === 'string';
+            return ret;
+        },
+        __wbg_require_0430b68b38d1a77e: function() { return handleError(function (arg0, arg1, arg2) {
+            const ret = getObject(arg0).require(getStringFromWasm0(arg1, arg2));
+            return addHeapObject(ret);
+        }, arguments) },
+        __wbg_crypto_ca5197b41df5e2bd: function(arg0) {
+            const ret = getObject(arg0).crypto;
+            return addHeapObject(ret);
+        },
+        __wbg_msCrypto_1088c21440b2d7e4: function(arg0) {
+            const ret = getObject(arg0).msCrypto;
+            return addHeapObject(ret);
+        },
+        __wbg_static_accessor_NODE_MODULE_06b864c18e8ae506: function() {
+            const ret = module;
+            return addHeapObject(ret);
+        },
+        __wbg_randomFillSync_2f6909f8132a175d: function() { return handleError(function (arg0, arg1, arg2) {
+            getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
+        }, arguments) },
+        __wbg_getRandomValues_11a236fbf9914290: function() { return handleError(function (arg0, arg1) {
+            getObject(arg0).getRandomValues(getObject(arg1));
+        }, arguments) },
+        __wbg_self_e7c1f827057f6584: function() { return handleError(function () {
+            const ret = self.self;
+            return addHeapObject(ret);
+        }, arguments) },
+        __wbg_window_a09ec664e14b1b81: function() { return handleError(function () {
+            const ret = window.window;
+            return addHeapObject(ret);
+        }, arguments) },
+        __wbg_globalThis_87cbb8506fecf3a9: function() { return handleError(function () {
+            const ret = globalThis.globalThis;
+            return addHeapObject(ret);
+        }, arguments) },
+        __wbg_global_c85a9259e621f3db: function() { return handleError(function () {
+            const ret = global.global;
+            return addHeapObject(ret);
+        }, arguments) },
+        __wbindgen_is_undefined: function(arg0) {
+            const ret = getObject(arg0) === undefined;
+            return ret;
+        },
+        __wbg_newnoargs_2b8b6bd7753c76ba: function(arg0, arg1) {
+            const ret = new Function(getStringFromWasm0(arg0, arg1));
+            return addHeapObject(ret);
+        },
+        __wbg_call_95d1ea488d03e4e8: function() { return handleError(function (arg0, arg1) {
+            const ret = getObject(arg0).call(getObject(arg1));
+            return addHeapObject(ret);
+        }, arguments) },
+        __wbg_new_f9876326328f45ed: function() {
+            const ret = new Object();
+            return addHeapObject(ret);
+        },
+        __wbg_call_9495de66fdbe016b: function() { return handleError(function (arg0, arg1, arg2) {
+            const ret = getObject(arg0).call(getObject(arg1), getObject(arg2));
+            return addHeapObject(ret);
+        }, arguments) },
+        __wbg_set_6aa458a4ebdb65cb: function() { return handleError(function (arg0, arg1, arg2) {
+            const ret = Reflect.set(getObject(arg0), getObject(arg1), getObject(arg2));
+            return ret;
+        }, arguments) },
+        __wbg_buffer_cf65c07de34b9a08: function(arg0) {
+            const ret = getObject(arg0).buffer;
+            return addHeapObject(ret);
+        },
+        __wbg_new_9d3a9ce4282a18a8: function(arg0, arg1) {
+            try {
+                var state0 = {a: arg0, b: arg1};
+                var cb0 = (arg0, arg1) => {
+                    const a = state0.a;
+                    state0.a = 0;
+                    try {
+                        return __wbg_adapter_1683(a, state0.b, arg0, arg1);
+                    } finally {
+                        state0.a = a;
+                    }
+                };
+                const ret = new Promise(cb0);
+                return addHeapObject(ret);
+            } finally {
+                state0.a = state0.b = 0;
+            }
+        },
+        __wbg_resolve_fd40f858d9db1a04: function(arg0) {
+            const ret = Promise.resolve(getObject(arg0));
+            return addHeapObject(ret);
+        },
+        __wbg_then_ec5db6d509eb475f: function(arg0, arg1) {
+            const ret = getObject(arg0).then(getObject(arg1));
+            return addHeapObject(ret);
+        },
+        __wbg_then_f753623316e2873a: function(arg0, arg1, arg2) {
+            const ret = getObject(arg0).then(getObject(arg1), getObject(arg2));
+            return addHeapObject(ret);
+        },
+        __wbg_new_537b7341ce90bb31: function(arg0) {
+            const ret = new Uint8Array(getObject(arg0));
+            return addHeapObject(ret);
+        },
+        __wbg_set_17499e8aa4003ebd: function(arg0, arg1, arg2) {
+            getObject(arg0).set(getObject(arg1), arg2 >>> 0);
+        },
+        __wbg_length_27a2afe8ab42b09f: function(arg0) {
+            const ret = getObject(arg0).length;
+            return ret;
+        },
+        __wbg_newwithlength_b56c882b57805732: function(arg0) {
+            const ret = new Uint8Array(arg0 >>> 0);
+            return addHeapObject(ret);
+        },
+        __wbg_subarray_7526649b91a252a6: function(arg0, arg1, arg2) {
+            const ret = getObject(arg0).subarray(arg1 >>> 0, arg2 >>> 0);
+            return addHeapObject(ret);
+        },
+        __wbg_new_d87f272aec784ec0: function(arg0, arg1) {
+            const ret = new Function(getStringFromWasm0(arg0, arg1));
+            return addHeapObject(ret);
+        },
+        __wbg_call_eae29933372a39be: function(arg0, arg1) {
+            const ret = getObject(arg0).call(getObject(arg1));
+            return addHeapObject(ret);
+        },
+        __wbindgen_jsval_eq: function(arg0, arg1) {
+            const ret = getObject(arg0) === getObject(arg1);
+            return ret;
+        },
+        __wbg_self_e0b3266d2d9eba1a: function(arg0) {
+            const ret = getObject(arg0).self;
+            return addHeapObject(ret);
+        },
+        __wbg_require_0993fe224bf8e202: function(arg0, arg1) {
+            const ret = require(getStringFromWasm0(arg0, arg1));
+            return addHeapObject(ret);
+        },
+        __wbg_crypto_e95a6e54c5c2e37f: function(arg0) {
+            const ret = getObject(arg0).crypto;
+            return addHeapObject(ret);
+        },
+        __wbg_getRandomValues_dc67302a7bd1aec5: function(arg0) {
+            const ret = getObject(arg0).getRandomValues;
+            return addHeapObject(ret);
+        },
+        __wbg_randomFillSync_dd2297de5917c74e: function(arg0, arg1, arg2) {
+            getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
+        },
+        __wbg_getRandomValues_02639197c8166a96: function(arg0, arg1, arg2) {
+            getObject(arg0).getRandomValues(getArrayU8FromWasm0(arg1, arg2));
+        },
+        __wbindgen_debug_string: function(arg0, arg1) {
+            const ret = debugString(getObject(arg1));
+            const ptr0 = passStringToWasm0(ret, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+            const len0 = WASM_VECTOR_LEN;
+            getInt32Memory0()[arg0 / 4 + 1] = len0;
+            getInt32Memory0()[arg0 / 4 + 0] = ptr0;
+        },
+        __wbindgen_throw: function(arg0, arg1) {
+            throw new Error(getStringFromWasm0(arg0, arg1));
+        },
+        __wbindgen_memory: function() {
+            const ret = wasm.memory;
+            return addHeapObject(ret);
+        },
+        __wbindgen_closure_wrapper6983: function(arg0, arg1, arg2) {
+            const ret = makeMutClosure(arg0, arg1, 225, __wbg_adapter_30);
+            return addHeapObject(ret);
+        },
+    },
+
 };
 
-module.exports.__wbg_resolve_fd40f858d9db1a04 = function(arg0) {
-    const ret = Promise.resolve(getObject(arg0));
-    return addHeapObject(ret);
-};
+const wasm_url = new URL('cardano_multiplatform_lib_bg.wasm', import.meta.url);
+let wasmCode = '';
+switch (wasm_url.protocol) {
+    case 'file:':
+    wasmCode = await Deno.readFile(wasm_url);
+    break
+    case 'https:':
+    case 'http:':
+    wasmCode = await (await fetch(wasm_url)).arrayBuffer();
+    break
+    default:
+    throw new Error(`Unsupported protocol: ${wasm_url.protocol}`);
+}
 
-module.exports.__wbg_then_ec5db6d509eb475f = function(arg0, arg1) {
-    const ret = getObject(arg0).then(getObject(arg1));
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_then_f753623316e2873a = function(arg0, arg1, arg2) {
-    const ret = getObject(arg0).then(getObject(arg1), getObject(arg2));
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_new_537b7341ce90bb31 = function(arg0) {
-    const ret = new Uint8Array(getObject(arg0));
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_set_17499e8aa4003ebd = function(arg0, arg1, arg2) {
-    getObject(arg0).set(getObject(arg1), arg2 >>> 0);
-};
-
-module.exports.__wbg_length_27a2afe8ab42b09f = function(arg0) {
-    const ret = getObject(arg0).length;
-    return ret;
-};
-
-module.exports.__wbg_newwithlength_b56c882b57805732 = function(arg0) {
-    const ret = new Uint8Array(arg0 >>> 0);
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_subarray_7526649b91a252a6 = function(arg0, arg1, arg2) {
-    const ret = getObject(arg0).subarray(arg1 >>> 0, arg2 >>> 0);
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_new_d87f272aec784ec0 = function(arg0, arg1) {
-    const ret = new Function(getStringFromWasm0(arg0, arg1));
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_call_eae29933372a39be = function(arg0, arg1) {
-    const ret = getObject(arg0).call(getObject(arg1));
-    return addHeapObject(ret);
-};
-
-module.exports.__wbindgen_jsval_eq = function(arg0, arg1) {
-    const ret = getObject(arg0) === getObject(arg1);
-    return ret;
-};
-
-module.exports.__wbg_self_e0b3266d2d9eba1a = function(arg0) {
-    const ret = getObject(arg0).self;
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_require_0993fe224bf8e202 = function(arg0, arg1) {
-    const ret = require(getStringFromWasm0(arg0, arg1));
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_crypto_e95a6e54c5c2e37f = function(arg0) {
-    const ret = getObject(arg0).crypto;
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_getRandomValues_dc67302a7bd1aec5 = function(arg0) {
-    const ret = getObject(arg0).getRandomValues;
-    return addHeapObject(ret);
-};
-
-module.exports.__wbg_randomFillSync_dd2297de5917c74e = function(arg0, arg1, arg2) {
-    getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
-};
-
-module.exports.__wbg_getRandomValues_02639197c8166a96 = function(arg0, arg1, arg2) {
-    getObject(arg0).getRandomValues(getArrayU8FromWasm0(arg1, arg2));
-};
-
-module.exports.__wbindgen_debug_string = function(arg0, arg1) {
-    const ret = debugString(getObject(arg1));
-    const ptr0 = passStringToWasm0(ret, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-    const len0 = WASM_VECTOR_LEN;
-    getInt32Memory0()[arg0 / 4 + 1] = len0;
-    getInt32Memory0()[arg0 / 4 + 0] = ptr0;
-};
-
-module.exports.__wbindgen_throw = function(arg0, arg1) {
-    throw new Error(getStringFromWasm0(arg0, arg1));
-};
-
-module.exports.__wbindgen_memory = function() {
-    const ret = wasm.memory;
-    return addHeapObject(ret);
-};
-
-module.exports.__wbindgen_closure_wrapper6983 = function(arg0, arg1, arg2) {
-    const ret = makeMutClosure(arg0, arg1, 225, __wbg_adapter_30);
-    return addHeapObject(ret);
-};
-
-const path = require('path').join(__dirname, 'cardano_multiplatform_lib_bg.wasm');
-const bytes = require('fs').readFileSync(path);
-
-const wasmModule = new WebAssembly.Module(bytes);
-const wasmInstance = new WebAssembly.Instance(wasmModule, imports);
-wasm = wasmInstance.exports;
-module.exports.__wasm = wasm;
+const wasmInstance = (await WebAssembly.instantiate(wasmCode, imports)).instance;
+const wasm = wasmInstance.exports;
 
