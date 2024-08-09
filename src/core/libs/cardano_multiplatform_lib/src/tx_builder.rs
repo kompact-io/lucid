@@ -260,19 +260,17 @@ fn min_fee(tx_builder: &mut TransactionBuilder) -> Result<Coin, JsError> {
     ).unwrap();
 
     let mut reference_scripts_tier_price = BigNum::from(0);
-    if let Some(reference_inputs) = &tx_builder.reference_inputs.clone() {
+    let mut inputs : Vec<TransactionUnspentOutput> = tx_builder.inputs.clone().iter().map(|x| x.utxo.clone()).collect();
+    let ref_inputs : Vec<TransactionUnspentOutput> = tx_builder.reference_inputs.clone().map_or( Vec::new(), |x| x.0.clone(), );
+    inputs.extend(ref_inputs);
+    let reference_scripts : Vec<&TransactionUnspentOutput> = inputs.iter().filter(|x| x.output.script_ref.is_some()).collect();
+    if reference_scripts.len() > 0 {
         // NOTE: The Chang hardfork introduced an additional fee based on the total size of the
         // reference scripts.
         // See the annex on https://github.com/CardanoSolutions/ogmios/releases/tag/v6.5.0
         let range: u64 = tx_builder.config.min_fee_reference_scripts_range.into();
         let multiplier: Decimal = tx_builder.config.min_fee_reference_scripts_multiplier.clone();
         let base: Decimal = tx_builder.config.min_fee_reference_scripts_base.clone();
-
-        let reference_scripts: Vec<&TransactionUnspentOutput> = reference_inputs
-            .0
-            .iter()
-            .filter(|ref_input| ref_input.output.script_ref.is_some())
-            .collect();
 
         let size_of_reference_scripts: u64 = reference_scripts
             .iter()
